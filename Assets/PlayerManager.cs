@@ -22,4 +22,9 @@ public class PlayerManager : NetworkBehaviour
     {
         playersInClient.Add(playerToAdd);
     }
+
+    public void RemovePlayerFromList(GameObject playerToRemove)
+    {
+        playersInClient.Remove(playerToRemove);
+    }
 }

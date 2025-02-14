@@ -71,6 +71,12 @@ public class Player : NetworkBehaviour
         movement.y = Input.GetAxisRaw("Vertical");   // W/S or Up/Down
 
         movement = movement.normalized; // Prevents diagonal speed boost
+
+        if (IsClient && Input.GetKeyDown(KeyCode.P))
+        {
+            // Client -> Server because PingRpc sends to Server
+            PingRpc(10);
+        }
     }
 
     void FixedUpdate()
@@ -123,6 +129,21 @@ public class Player : NetworkBehaviour
         isDashing=false;
     }
 
+    [Rpc(SendTo.NotMe)]
+    public void PingRpc(int pingCount)
+    {
+        // Server -> Clients because PongRpc sends to NotServer
+        // Note: This will send to all clients.
+        // Sending to the specific client that requested the pong will be discussed in the next section.
+        PongRpc(pingCount, "PONG!");
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    void PongRpc(int pingCount, string message)
+    {
+        Debug.Log($"Received pong from server for ping {pingCount} and message {message}");
+    }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -147,6 +168,9 @@ public class Player : NetworkBehaviour
         }
     }
 
-
+    private void OnApplicationQuit()
+    {
+        playerManager.RemovePlayerFromList(this.gameObject);
+    }
 
 }
