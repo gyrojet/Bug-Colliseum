@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.InputSystem;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class Player : NetworkBehaviour
 {
@@ -13,6 +14,10 @@ public class Player : NetworkBehaviour
     private bool isDashing;
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashDuration = 0.2f;
+    [SerializeField] private GameObject weapon;
+    [SerializeField] private GameObject shield;
+    private bool isDefending = false;
+    private Vector3 shieldOriginalPosition;
 
 
     //WE MIGHT CHANGE FOR SPAWNING AT THE BEGGINING OF LEVELS SO WE USE THIS METHOD
@@ -25,17 +30,27 @@ public class Player : NetworkBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        shieldOriginalPosition = shield.transform.localPosition; // Store shield's starting position
+
     }
 
     void Update()
     {
         if(!IsOwner || !Application.isFocused) return;
+
         // Get Input
 
         if (Input.GetKeyDown(KeyCode.E) && !isDashing)
         {
             StartCoroutine(Dash());
         }
+        if (Input.GetMouseButtonDown(0) )
+            StartCoroutine(Attack());
+
+        if (Input.GetMouseButtonDown(1))
+            StartCoroutine(Defend());
+        if (Input.GetMouseButtonUp(1))
+            LowerShield();
 
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
         movement.y = Input.GetAxisRaw("Vertical");   // W/S or Up/Down
@@ -49,6 +64,39 @@ public class Player : NetworkBehaviour
         rb.linearVelocity = movement * speed;
     }
 
+    IEnumerator Attack()
+    {
+        Vector3 originalPosition = weapon.transform.localPosition; // Save the original position (relative to parent)
+
+        // Move weapon slightly forward
+        weapon.transform.localPosition += new Vector3(0.5f, 0, 0); // Adjust the offset as needed
+        yield return new WaitForSeconds(0.1f); // Pause for a short time
+
+        // Return weapon to its original position
+        weapon.transform.localPosition = originalPosition;
+
+    }
+
+    IEnumerator Defend()
+    {
+        isDefending = true;
+
+        // Move weapon slightly forward
+        shield.transform.localPosition += new Vector3(0, 0.5f, 0); // Adjust the offset as needed
+        yield return new WaitForSeconds(1f); // Pause for a short time
+
+        // Return weapon to its original position
+        LowerShield();
+
+
+    }
+
+    void LowerShield()
+    {
+        shield.transform.localPosition = shieldOriginalPosition;
+
+        isDefending = false;
+    }
     IEnumerator Dash()
     {
         isDashing = true;
@@ -63,10 +111,20 @@ public class Player : NetworkBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Weapon"))
+       
+            if (collision.gameObject.CompareTag("Weapon"))
+            {
+
+                Debug.Log("Collide with weapon");
+
+                //add damage to this player
+
+
+            }
+        if (collision.gameObject.CompareTag("Shield") && isDefending)
         {
 
-            Debug.Log("Collide with weapon");
+            Debug.Log("Collide with shield/defended");
 
             //add damage to this player
 
