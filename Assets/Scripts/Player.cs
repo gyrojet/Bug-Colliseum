@@ -18,6 +18,7 @@ public class Player : NetworkBehaviour
     //[SerializeField] private GameObject shield;
     private bool isDefending = false;
     private Vector3 shieldOriginalPosition;
+    private int life = 3;
 
     PlayerManager playerManager;
 
@@ -53,7 +54,11 @@ public class Player : NetworkBehaviour
 
     void Update()
     {
-        if(!IsOwner || !Application.isFocused) return;
+        Debug.Log($"IsOwner: {IsOwner}, Local Player ID: {NetworkManager.Singleton.LocalClientId}, Object Owner ID: {OwnerClientId}");
+
+        if (!IsOwner) return;
+
+        if (!Application.isFocused) return;
 
         // Get Input
 
@@ -72,7 +77,7 @@ public class Player : NetworkBehaviour
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
         movement.y = Input.GetAxisRaw("Vertical");   // W/S or Up/Down
 
-        movement = movement.normalized; // Prevents diagonal speed boost
+        //movement = movement.normalized; // Prevents diagonal speed boost
 
         if (IsClient && Input.GetKeyDown(KeyCode.P))
         {
@@ -159,7 +164,7 @@ public class Player : NetworkBehaviour
 
                 Debug.Log("Collide with weapon");
 
-                //add damage to this player
+            Damage();
 
 
             }
@@ -168,7 +173,6 @@ public class Player : NetworkBehaviour
 
             Debug.Log("Collide with shield/defended");
 
-            //add damage to this player
 
 
         }
@@ -177,6 +181,12 @@ public class Player : NetworkBehaviour
     private void OnApplicationQuit()
     {
         playerManager.RemovePlayerFromList(this.gameObject);
+    }
+
+    void Damage()
+    {
+        life--;
+        Debug.Log("current life " + life.ToString());
     }
 
 }
