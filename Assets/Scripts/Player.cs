@@ -14,12 +14,14 @@ public class Player : NetworkBehaviour
     private bool isDashing;
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashDuration = 0.2f;
-    [SerializeField] private GameObject weapon;
-    [SerializeField] private GameObject shield;
+    //[SerializeField] private GameObject weapon;
+    //[SerializeField] private GameObject shield;
     private bool isDefending = false;
     private Vector3 shieldOriginalPosition;
 
     PlayerManager playerManager;
+
+    //NetworkVariable<Transform> 
 
     //WE MIGHT CHANGE FOR SPAWNING AT THE BEGGINING OF LEVELS SO WE USE THIS METHOD
     //public override void OnNetworkSpawn()
@@ -45,7 +47,7 @@ public class Player : NetworkBehaviour
         }
 
         rb = GetComponent<Rigidbody2D>();
-        shieldOriginalPosition = shield.transform.localPosition; // Store shield's starting position
+        //shieldOriginalPosition = shield.transform.localPosition; // Store shield's starting position
 
     }
 
@@ -59,13 +61,13 @@ public class Player : NetworkBehaviour
         {
             StartCoroutine(Dash());
         }
-        if (Input.GetMouseButtonDown(0) )
-            StartCoroutine(Attack());
+        //if (Input.GetMouseButtonDown(0) )
+        //    StartCoroutine(Attack());aaaa
 
-        if (Input.GetMouseButtonDown(1))
-            StartCoroutine(Defend());
-        if (Input.GetMouseButtonUp(1))
-            LowerShield();
+        //if (Input.GetMouseButtonDown(1))
+        //    StartCoroutine(Defend());
+        //if (Input.GetMouseButtonUp(1))
+        //    LowerShield();
 
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
         movement.y = Input.GetAxisRaw("Vertical");   // W/S or Up/Down
@@ -85,39 +87,39 @@ public class Player : NetworkBehaviour
         rb.linearVelocity = movement * speed;
     }
 
-    IEnumerator Attack()
-    {
-        Vector3 originalPosition = weapon.transform.localPosition; // Save the original position (relative to parent)
+    //IEnumerator Attack()
+    //{
+    //    Vector3 originalPosition = weapon.transform.localPosition; // Save the original position (relative to parent)
 
-        // Move weapon slightly forward
-        weapon.transform.localPosition += new Vector3(0.5f, 0, 0); // Adjust the offset as needed
-        yield return new WaitForSeconds(0.1f); // Pause for a short time
+    //    // Move weapon slightly forward
+    //    weapon.transform.localPosition += new Vector3(0.5f, 0, 0); // Adjust the offset as needed
+    //    yield return new WaitForSeconds(0.1f); // Pause for a short time
 
-        // Return weapon to its original position
-        weapon.transform.localPosition = originalPosition;
+    //    // Return weapon to its original position
+    //    weapon.transform.localPosition = originalPosition;
 
-    }
+    //}
 
-    IEnumerator Defend()
-    {
-        isDefending = true;
+    //IEnumerator Defend()
+    //{
+    //    isDefending = true;
 
-        // Move weapon slightly forward
-        shield.transform.localPosition += new Vector3(0, 0.5f, 0); // Adjust the offset as needed
-        yield return new WaitForSeconds(1f); // Pause for a short time
+    //    // Move weapon slightly forward
+    //    shield.transform.localPosition += new Vector3(0, 0.5f, 0); // Adjust the offset as needed
+    //    yield return new WaitForSeconds(1f); // Pause for a short time
 
-        // Return weapon to its original position
-        LowerShield();
+    //    // Return weapon to its original position
+    //    LowerShield();
 
 
-    }
+    //}
 
-    void LowerShield()
-    {
-        shield.transform.localPosition = shieldOriginalPosition;
+    //void LowerShield()
+    //{
+    //    shield.transform.localPosition = shieldOriginalPosition;
 
-        isDefending = false;
-    }
+    //    isDefending = false;
+    //}
     IEnumerator Dash()
     {
         isDashing = true;
@@ -144,6 +146,10 @@ public class Player : NetworkBehaviour
         Debug.Log($"Received pong from server for ping {pingCount} and message {message}");
     }
 
+    public void SetNewTransform(Transform newTransform)
+    {
+        gameObject.transform.position = newTransform.position;
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
