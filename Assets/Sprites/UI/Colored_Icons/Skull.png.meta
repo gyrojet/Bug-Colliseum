@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0d8218e5d9fb27a46ab8fdb1d2571815
+guid: 4d7e5d0c33526134ead5fa79124f43ce
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -923646287907960418
-    second: Icon_HowToPlay_0
+      213: -2739807658926110822
+    second: Skull_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -135,30 +135,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Icon_HowToPlay_0
+      name: Skull_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 5
-        width: 60
-        height: 51
+        x: 18
+        y: 0
+        width: 220
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e994327489c8e23f0800000000000000
-      internalID: -923646287907960418
+      spriteID: a9780d8437f3af9d0800000000000000
+      internalID: -2739807658926110822
       vertices: []
       indices: 
       edges: []
@@ -186,8 +173,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Icon_HowToPlay_0: -923646287907960418
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

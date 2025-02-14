@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fc49de42b4593394c8210e5e4573b3fe
+guid: 3146150ae1c5d9b4eb78e643a4ed9f3f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4969391381600676478
-    second: Icon_Play_0
+      213: 170680371954149730
+    second: White Check_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -135,30 +135,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Icon_Play_0
+      name: White Check_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 0
-        width: 47
-        height: 60
+        x: 0
+        y: 8
+        width: 512
+        height: 496
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 285ddcd0edc290bb0800000000000000
-      internalID: -4969391381600676478
+      spriteID: 269657cd4e06e5200800000000000000
+      internalID: 170680371954149730
       vertices: []
       indices: 
       edges: []
@@ -187,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Icon_Play_0: -4969391381600676478
+      White Check_0: 170680371954149730
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
