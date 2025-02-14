@@ -28,7 +28,7 @@ public class PlayerManager : NetworkBehaviour
         if (pmInstance == null)
             pmInstance = this;
 
-        setSpawnPoints.onClick.AddListener(SetPositionsOfClientsRpc);
+        setSpawnPoints.onClick.AddListener(SetPositionRpc);
     }
 
     public void AddPlayerToList(GameObject playerToAdd)
@@ -41,16 +41,16 @@ public class PlayerManager : NetworkBehaviour
         playersInClient.Remove(playerToRemove);
     }
 
-   
-    private void SetPositionsOfClientsRpc()
+    [Rpc(SendTo.ClientsAndHost)]
+    public void SetPositionRpc()
     {
         try
         {
             Debug.Log("RUN");
-            for (int counter = 0; counter > playersInClient.Count; counter++)
+            for (int counter = 0; counter < playersInClient.Count; counter++)
             {
-                //[INetworkSerializable] Transform tf = playerPos[counter];
-                //playersInClient[counter].GetComponent<Player>().SetNewTransform();
+                Transform tf = playerPos[counter];
+                playersInClient[counter].GetComponent<Player>().SetNewTransform(tf);
             }
         }
         catch (Exception ex) 

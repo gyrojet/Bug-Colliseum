@@ -33,7 +33,8 @@ public class Player : NetworkBehaviour
     //    Initialize();
     //}
 
-    void Start()
+    
+    void Awake()
     {
         if (playerManager == null)
         {
@@ -50,6 +51,9 @@ public class Player : NetworkBehaviour
         }
 
         rb = GetComponent<Rigidbody2D>();
+
+        //playerManager.SetPositionRpc();
+        
         //shieldOriginalPosition = shield.transform.localPosition; // Store shield's starting position
 
     }
@@ -154,9 +158,12 @@ public class Player : NetworkBehaviour
     }
 
     
-    public void SetNewTransformRpc(Transform newTransform)
+    public void SetNewTransform(Transform newTransform)
     {
-        gameObject.transform.position = newTransform.position;
+        Debug.Log("FunctionHit!");
+        gameObject.transform.position = new Vector3(newTransform.position.x, newTransform.position.y, 0);
+
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
