@@ -22,6 +22,8 @@ public class Player : NetworkBehaviour
 
     PlayerManager playerManager;
 
+
+
     //NetworkVariable<Transform> 
 
     //WE MIGHT CHANGE FOR SPAWNING AT THE BEGGINING OF LEVELS SO WE USE THIS METHOD
@@ -151,7 +153,8 @@ public class Player : NetworkBehaviour
         Debug.Log($"Received pong from server for ping {pingCount} and message {message}");
     }
 
-    public void SetNewTransform(Transform newTransform)
+    
+    public void SetNewTransformRpc(Transform newTransform)
     {
         gameObject.transform.position = newTransform.position;
     }
@@ -176,11 +179,6 @@ public class Player : NetworkBehaviour
 
 
         }
-    }
-
-    private void OnApplicationQuit()
-    {
-        playerManager.RemovePlayerFromList(this.gameObject);
     }
 
     void Damage()

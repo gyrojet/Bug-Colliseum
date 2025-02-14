@@ -19,6 +19,7 @@ public class PlayerManager : NetworkBehaviour
     
     [SerializeField] TMP_InputField joinCodeField;
 
+
     public int NumberOfPlayers { get { return playersInClient.Count; } }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -40,16 +41,16 @@ public class PlayerManager : NetworkBehaviour
         playersInClient.Remove(playerToRemove);
     }
 
-    [Rpc(SendTo.ClientsAndHost)]
-    private async void SetPositionsOfClientsRpc()
+   
+    private void SetPositionsOfClientsRpc()
     {
         try
         {
             Debug.Log("RUN");
             for (int counter = 0; counter > playersInClient.Count; counter++)
             {
-                Transform tf = playerPos[counter];
-                playersInClient[counter].GetComponent<Player>().SetNewTransform(tf);
+                //[INetworkSerializable] Transform tf = playerPos[counter];
+                //playersInClient[counter].GetComponent<Player>().SetNewTransform();
             }
         }
         catch (Exception ex) 
