@@ -14,6 +14,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashDuration = 0.2f;
 
+    PlayerManager playerManager;
 
     //WE MIGHT CHANGE FOR SPAWNING AT THE BEGGINING OF LEVELS SO WE USE THIS METHOD
     //public override void OnNetworkSpawn()
@@ -24,6 +25,20 @@ public class Player : NetworkBehaviour
 
     void Start()
     {
+        if (playerManager == null)
+        {
+            playerManager = PlayerManager.pmInstance;
+        }
+
+        try
+        {
+            playerManager.AddPlayerToList(this.gameObject);
+        }
+        catch
+        {
+            Debug.Log("Unable to fetch Player Manager");
+        }
+
         rb = GetComponent<Rigidbody2D>();
     }
 
