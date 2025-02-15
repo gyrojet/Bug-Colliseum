@@ -10,7 +10,17 @@ public class Player : NetworkBehaviour
     [SerializeField] private float originalSpeed = 5f;
 
     [SerializeField] public int playerIndex;                                            // Use this to get UI/Spawn points
-    private Transform player_RespawnPoint = null;
+
+    [SerializeField] private Transform player_RespawnPoint = null;
+
+    public Transform SpawnPoint
+    {
+        get { return player_RespawnPoint; }
+        set
+        {
+            player_RespawnPoint = value;
+        }
+    }
 
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -23,7 +33,7 @@ public class Player : NetworkBehaviour
     private Vector3 shieldOriginalPosition;
     private int life = 3;
 
-    PlayerManager playerManager;
+    [SerializeField] PlayerManager playerManager;
 
 
 
@@ -162,12 +172,19 @@ public class Player : NetworkBehaviour
     }
 
     
+    // Gets new transform and moves player's location to that point
     public void SetNewTransform(Transform newTransform)
     {
-        Debug.Log("FunctionHit!");
-        gameObject.transform.position = new Vector3(newTransform.position.x, newTransform.position.y, 0);
-
-        
+        if (newTransform != null) 
+        {
+            Debug.Log("FunctionHit!");
+            gameObject.transform.position = new Vector3(newTransform.position.x, newTransform.position.y, 0);
+        }
+        else
+        {
+            Debug.Log($"Transform {newTransform} is null!");
+        }
+       
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

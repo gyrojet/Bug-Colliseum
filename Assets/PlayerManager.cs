@@ -12,11 +12,10 @@ public class PlayerManager : NetworkBehaviour
     [SerializeField] private List<GameObject> playersInClient = new List<GameObject>();
     [SerializeField] private List<Transform> playerPos = new List<Transform>();
 
+    [SerializeField] private List<Transform> matchSpawnPoints = new List<Transform>();
+
     [SerializeField] public static PlayerManager pmInstance;
 
-    [Header("Buttons")]
-    [SerializeField] Button setSpawnPoints;
-    
     [SerializeField] TMP_InputField joinCodeField;
 
 
@@ -27,8 +26,6 @@ public class PlayerManager : NetworkBehaviour
     {
         if (pmInstance == null)
             pmInstance = this;
-
-        setSpawnPoints.onClick.AddListener(SetPositionRpc);
     }
 
     public void AddPlayerToList(GameObject playerToAdd)
@@ -41,21 +38,78 @@ public class PlayerManager : NetworkBehaviour
         playersInClient.Remove(playerToRemove);
     }
 
+    //[Rpc(SendTo.ClientsAndHost)]
+    //public void SetPositionRpc()
+    //{
+    //    try
+    //    {
+    //        Debug.Log("RUN");
+    //        for (int counter = 0; counter < playersInClient.Count; counter++)
+    //        {
+    //            Transform tf = playerPos[counter];
+    //            playersInClient[counter].GetComponent<Player>().SetNewTransform(tf);
+    //        }
+    //    }
+    //    catch (Exception ex) 
+    //    {
+    //        Debug.Log(ex);
+    //    }
+    //}
+
     [Rpc(SendTo.ClientsAndHost)]
-    public void SetPositionRpc()
+    public void AssignPlayerSpawnPointRpc()
     {
         try
         {
             Debug.Log("RUN");
+
             for (int counter = 0; counter < playersInClient.Count; counter++)
             {
-                Transform tf = playerPos[counter];
-                playersInClient[counter].GetComponent<Player>().SetNewTransform(tf);
+                if (playersInClient[counter].GetComponent<Player>().SpawnPoint == null)
+                {
+                    Transform spawnPointToSet = matchSpawnPoints[counter];
+
+                    playersInClient[counter].GetComponent<Player>().SpawnPoint = spawnPointToSet;
+
+                    Debug.Log($"Set transform for player: {playersInClient[counter].GetComponent<Player>().playerIndex}");
+                }
+                else
+                {
+                    Debug.Log("Spawn point already exists for this player.");
+                }
             }
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             Debug.Log(ex);
         }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void ReturnAllPlayersToSpawnPointRpc()
+    {
+        try
+        {
+            Player playerTemp;
+
+            for (int counter = 0;counter < playersInClient.Count; counter++)
+            {
+                playerTemp = playersInClient[counter].GetComponent<Player>();
+
+                playerTemp.SetNewTransform(playerTemp.SpawnPoint);
+
+                Debug.Log($"Set transform for player: {playerTemp.playerIndex}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex);
+        }
+    }
+
+    public void TEST_RespawnAllPlayers()
+    {
+        AssignPlayerSpawnPointRpc();
+        ReturnAllPlayersToSpawnPointRpc();
     }
 }

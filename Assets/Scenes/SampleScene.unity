@@ -329,12 +329,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   playersInClient: []
-  playerPos:
+  playerPos: []
+  matchSpawnPoints:
   - {fileID: 261019221}
   - {fileID: 579182866}
   - {fileID: 1156984354}
   - {fileID: 1392604672}
-  setSpawnPoints: {fileID: 389006806}
   joinCodeField: {fileID: 740398564}
 --- !u!4 &100970812
 Transform:
@@ -1078,7 +1078,7 @@ GameObject:
   - component: {fileID: 389006807}
   - component: {fileID: 389006806}
   m_Layer: 5
-  m_Name: SetSpawnPoints
+  m_Name: Start Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3659,7 +3659,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Start Match
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5426,6 +5426,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   pm: {fileID: 100970811}
   numPlayers: {fileID: 154190638}
+  startGame: {fileID: 389006806}
 --- !u!4 &1962922143
 Transform:
   m_ObjectHideFlags: 0
