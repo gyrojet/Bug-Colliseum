@@ -107,6 +107,24 @@ public class PlayerManager : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
+    public void FreezeAllPlayersRpc()
+    {
+        foreach (GameObject player in playersInClient) 
+        {
+            player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void UnfreezeAllPlayersRpc()
+    {
+        foreach (GameObject player in playersInClient)
+        {
+            player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        }
+    }
+
     public void TEST_RespawnAllPlayers()
     {
         AssignPlayerSpawnPointRpc();
