@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: ff244a5b436905a49aa408149363873e
+guid: 7ef3ad6b532922646be3b266b474f259
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3674457273622998721
-    second: White Controls_0
-  - first:
-      213: 1983358276094953954
-    second: White Controls_1
+      213: -325494485675421223
+    second: Fill_Violet_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -55,7 +52,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 0, y: 16, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -142,45 +139,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: White Controls_0
-      rect:
-        serializedVersion: 2
-        x: 211
-        y: 426
-        width: 90
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f31d957e394b10dc0800000000000000
-      internalID: -3674457273622998721
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: White Controls_1
+      name: Fill_Violet_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 39
-        width: 512
-        height: 363
+        y: 0
+        width: 446
+        height: 185
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2e988f408dd468b10800000000000000
-      internalID: 1983358276094953954
+      spriteID: 9d1d7f46d7c9b7bf0800000000000000
+      internalID: -325494485675421223
       vertices: []
       indices: 
       edges: []
@@ -190,7 +165,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -199,8 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      White Controls_0: -3674457273622998721
-      White Controls_1: 1983358276094953954
+      Fill_Violet_0: -325494485675421223
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
