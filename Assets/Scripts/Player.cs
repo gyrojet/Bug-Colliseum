@@ -6,8 +6,11 @@ using Unity.VisualScripting;
 
 public class Player : NetworkBehaviour
 {
-   [SerializeField] private float speed = 5f;
+    [SerializeField] private float speed = 5f;
     [SerializeField] private float originalSpeed = 5f;
+
+    [SerializeField] public int playerIndex;                                            // Use this to get UI/Spawn points
+    private Transform player_RespawnPoint = null;
 
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -44,6 +47,7 @@ public class Player : NetworkBehaviour
         try
         {
             playerManager.AddPlayerToList(this.gameObject);
+            playerIndex = playerManager.NumberOfPlayers - 1;
         }
         catch
         {
@@ -193,5 +197,8 @@ public class Player : NetworkBehaviour
         life--;
         Debug.Log("current life " + life.ToString());
     }
+
+    // Death Event
+    // Work on tommorow
 
 }
