@@ -10,6 +10,8 @@ public class UIManager_Lobby : NetworkBehaviour
     [SerializeField] TextMeshProUGUI numPlayers;
     [SerializeField] Button startGame;
 
+    [SerializeField] GameObject serverStuff_NumberOfPlayers;
+
     private void Start()
     {
         startGame.onClick.AddListener(StartGame_TEST);
@@ -41,6 +43,8 @@ public class UIManager_Lobby : NetworkBehaviour
 
     private void StartGame_TEST()
     {
+
+
         pm.TEST_RespawnAllPlayers();
     }
 }
