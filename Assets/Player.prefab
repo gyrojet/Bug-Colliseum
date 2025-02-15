@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -3325390810796796541}
   - component: {fileID: -2727536890645196065}
   - component: {fileID: -8051297383226331998}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -170,8 +170,11 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   speed: 5
   originalSpeed: 5
+  playerIndex: 0
+  player_RespawnPoint: {fileID: 0}
   dashSpeed: 10
   dashDuration: 0.2
+  playerManager: {fileID: 0}
 --- !u!50 &-2727536890645196065
 Rigidbody2D:
   serializedVersion: 5
@@ -226,7 +229,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4344472292468488125}
   - component: {fileID: 4208090869236613907}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Square
   m_TagString: Weapon
   m_Icon: {fileID: 0}
@@ -313,7 +316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6447341016463128964}
   - component: {fileID: 7012295488659770740}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -31,7 +31,8 @@ public class Player : NetworkBehaviour
     //[SerializeField] private GameObject shield;
     private bool isDefending = false;
     private Vector3 shieldOriginalPosition;
-    private int life = 3;
+    private SpriteRenderer player_SR;
+    [SerializeField] private int life = 3;
 
     [SerializeField] PlayerManager playerManager;
 
@@ -58,6 +59,8 @@ public class Player : NetworkBehaviour
         {
             playerManager.AddPlayerToList(this.gameObject);
             playerIndex = playerManager.NumberOfPlayers - 1;
+
+            player_SR = GetComponent<SpriteRenderer>();
         }
         catch
         {
@@ -99,10 +102,9 @@ public class Player : NetworkBehaviour
 
         //movement = movement.normalized; // Prevents diagonal speed boost
 
-        if (IsClient && Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.R) && !isDashing)
         {
-            // Client -> Server because PingRpc sends to Server
-            PingRpc(10);
+            Die();
         }
     }
 
@@ -173,12 +175,12 @@ public class Player : NetworkBehaviour
 
     
     // Gets new transform and moves player's location to that point
-    public void SetNewTransform(Transform newTransform)
+    public void SetNewTransform(Vector3 newTransform)
     {
         if (newTransform != null) 
         {
             Debug.Log("FunctionHit!");
-            gameObject.transform.position = new Vector3(newTransform.position.x, newTransform.position.y, 0);
+            gameObject.transform.position = new Vector3(newTransform.x, newTransform.y, 0);
         }
         else
         {
@@ -187,6 +189,44 @@ public class Player : NetworkBehaviour
        
     }
 
+    public void Die()
+    {
+        PlayerDeathEvent();
+    }
+
+    private void PlayerDeathEvent()
+    {
+        Vector3 deathZone = new Vector3(9999999f, 9999999f, 0f);
+        // Player fucks off
+        SetNewTransform(deathZone);
+
+        gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+
+        gameObject.layer = LayerMask.NameToLayer("IgnoreLayer");
+
+        if (life > 0)
+            Invoke("RespawnPlayer", 2.5f);
+        else
+            Debug.Log("Ur dead lol");
+    }
+
+    private void RespawnPlayer()
+    {
+        player_SR.color = new Color(1f, 0f, 0f, 0.2f);
+
+        SetNewTransform(SpawnPoint.transform.position);
+
+        gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+
+        Invoke("ResetPlayerCollision", 2.5f);
+    }
+
+    private void ResetPlayerCollision()
+    {
+        player_SR.color = new Color(1f, 1f, 1f, 1f);
+
+        gameObject.layer = LayerMask.NameToLayer("Player");
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
        

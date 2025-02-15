@@ -96,7 +96,7 @@ public class PlayerManager : NetworkBehaviour
             {
                 playerTemp = playersInClient[counter].GetComponent<Player>();
 
-                playerTemp.SetNewTransform(playerTemp.SpawnPoint);
+                playerTemp.SetNewTransform(playerTemp.SpawnPoint.transform.position);
 
                 Debug.Log($"Set transform for player: {playerTemp.playerIndex}");
             }
