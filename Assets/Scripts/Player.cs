@@ -6,6 +6,10 @@ using Unity.VisualScripting;
 
 public class Player : NetworkBehaviour
 {
+
+    GameManager gameManager;
+
+
     private Camera player_MainCam;
 
     [SerializeField] private float speed = 5f;
@@ -38,7 +42,7 @@ public class Player : NetworkBehaviour
     private Vector3 shieldOriginalPosition;
     private SpriteRenderer player_SR;
     [SerializeField] private int life = 3;
-
+    public bool isDead =false;
     [SerializeField] PlayerManager playerManager;
 
 
@@ -302,7 +306,11 @@ public class Player : NetworkBehaviour
         if (life > 0)
             Invoke("RespawnPlayerRpc", 2.5f);
         else
-            Debug.Log("Ur dead lol");
+        {
+            isDead = true;
+            gameManager.playerCounter--;
+        }
+            //Debug.Log("Ur dead lol");
     }
 
     [Rpc(SendTo.ClientsAndHost)]

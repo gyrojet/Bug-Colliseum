@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
+    PlayerManager playerManager = new PlayerManager();
+    public int playerCounter;
     // Get the reference from UIManager
 
     // When a player has 0 lives, call a method (a isDead bool) to change counter on GameManager / Counter has to be set up based on how many player we currently have
@@ -11,7 +13,10 @@ public class GameManager : NetworkBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerCounter = playerManager.NumberOfPlayers;
+
         // spawn players
+        playerManager.RespawnAllPlayers();
         // calls StartMatch()
     }
 
@@ -20,6 +25,9 @@ public class GameManager : NetworkBehaviour
     {
         //check for players status
         //if only one alive call endGame
+        if (playerCounter == 0)
+            EndGame();
+        
         //if time`s up, call EndGame
     }
 
@@ -27,6 +35,12 @@ public class GameManager : NetworkBehaviour
     void EndGame()
     {
         //Handles globalTimer / UI? / which player won ( how do I check on that?)
+
+        string winner = playerManager.NumberOfPlayers.ToString();
+
+        Debug.Log("Winner is :" + winner);
+
+
     }
 
     /*

@@ -58,7 +58,7 @@ public class UIManager_Lobby : NetworkBehaviour
         {
             SetValueOfLobbyUIRpc(false);
 
-            pm.TEST_RespawnAllPlayers();            // Send all players to spawn points
+            pm.RespawnAllPlayers();            // Send all players to spawn points
 
             pm.FreezeAllPlayersRpc();               // Freeze movement of all players
 

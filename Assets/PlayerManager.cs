@@ -144,7 +144,7 @@ public class PlayerManager : NetworkBehaviour
         hasGameStarted = value;
     }
 
-    public void TEST_RespawnAllPlayers()
+    public void RespawnAllPlayers()
     {
         AssignPlayerSpawnPointRpc();
         ReturnAllPlayersToSpawnPointRpc();
