@@ -9,6 +9,7 @@ public class Weapon : NetworkBehaviour
 {
     public SpriteRenderer spriteRenderer;
     public CapsuleCollider2D collider;
+    [SerializeField] Player player;
 
     private void Start()
     {
@@ -22,9 +23,12 @@ public class Weapon : NetworkBehaviour
         {
             if (collision.gameObject.tag == "Player")
             {
-                if (collision.gameObject.GetComponent<Player>().IsPlayerBlocking == false) 
+                if (player.isDefending == false)
                 {
-                    collision.gameObject.GetComponent <Player>().Die();
+                    if (collision.gameObject.GetComponent<Player>().IsPlayerBlocking == false)
+                    {
+                        collision.gameObject.GetComponent<Player>().Die();
+                    }
                 }
             }
         }
