@@ -4,7 +4,9 @@ using UnityEngine;
 public class GameManager : NetworkBehaviour
 {
     // Get the reference from UIManager
+    UIManager uiManager;
 
+    int counter;
     // When a player has 0 lives, call a method (a isDead bool) to change counter on GameManager / Counter has to be set up based on how many player we currently have
 
 
@@ -13,6 +15,8 @@ public class GameManager : NetworkBehaviour
     {
         // spawn players
         // calls StartMatch()
+        StartMatch();
+        //counter = numofplayers;
     }
 
     // Update is called once per frame
@@ -34,5 +38,9 @@ public class GameManager : NetworkBehaviour
      * re-enable player movement
      * start countdownTimer (coroutine - start the globalTimer)
      */
+    void StartMatch()
+    {
+
+    }
 
 }

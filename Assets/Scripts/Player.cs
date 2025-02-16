@@ -36,10 +36,16 @@ public class Player : NetworkBehaviour
     private bool isDefending = false;
     private bool isAttacking = false;
     private Vector3 shieldOriginalPosition;
+<<<<<<< Updated upstream
     private SpriteRenderer player_SR;
     [SerializeField] private int life = 3;
 
     [SerializeField] PlayerManager playerManager;
+=======
+    private int life = 3;
+    private bool isDead = false;
+    PlayerManager playerManager;
+>>>>>>> Stashed changes
 
 
 
@@ -92,6 +98,7 @@ public class Player : NetworkBehaviour
         {
             StartCoroutine(Dash());
         }
+<<<<<<< Updated upstream
 
         if (Input.GetMouseButtonDown(0) && isAttacking == false)
         {
@@ -103,6 +110,15 @@ public class Player : NetworkBehaviour
 
         if (Input.GetMouseButtonUp(1))
             CallLowerShieldRpc();
+=======
+        if (Input.GetMouseButtonDown(0))
+            StartCoroutine(Attack()); aaaa
+
+        if (Input.GetMouseButtonDown(1))
+            StartCoroutine(Defend());
+        if (Input.GetMouseButtonUp(1))
+            LowerShield();
+>>>>>>> Stashed changes
 
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
         movement.y = Input.GetAxisRaw("Vertical");   // W/S or Up/Down
@@ -147,6 +163,7 @@ public class Player : NetworkBehaviour
         rb.linearVelocity = movement * speed;
     }
 
+<<<<<<< Updated upstream
     [Rpc(SendTo.ClientsAndHost)]
     private void UpdateLookPositionRpc()
     {
@@ -195,6 +212,29 @@ public class Player : NetworkBehaviour
 
         yield return new WaitForSeconds(1f); // Pause for a short time
 
+=======
+    IEnumerator Attack()
+    {
+        Vector3 originalPosition = weapon.transform.localPosition; // Save the original position (relative to parent)
+
+        // Move weapon slightly forward
+        weapon.transform.localPosition += new Vector3(0.5f, 0, 0); // Adjust the offset as needed
+        yield return new WaitForSeconds(0.1f); // Pause for a short time
+
+        // Return weapon to its original position
+        weapon.transform.localPosition = originalPosition;
+
+    }
+
+    IEnumerator Defend()
+    {
+        isDefending = true;
+
+        // Move weapon slightly forward
+        shield.transform.localPosition += new Vector3(0, 0.5f, 0); // Adjust the offset as needed
+        yield return new WaitForSeconds(1f); // Pause for a short time
+
+>>>>>>> Stashed changes
         // Return weapon to its original position
         LowerShield();
 
@@ -204,6 +244,7 @@ public class Player : NetworkBehaviour
     void LowerShield()
     {
         shield.transform.localPosition = shieldOriginalPosition;
+<<<<<<< Updated upstream
 
         if (shield.GetComponent<CapsuleCollider2D>().enabled != false)
             shield.GetComponent <CapsuleCollider2D>().enabled = false;
@@ -229,6 +270,11 @@ public class Player : NetworkBehaviour
         LowerShield();
     }
 
+=======
+
+        isDefending = false;
+    }
+>>>>>>> Stashed changes
     IEnumerator Dash()
     {
         isDashing = true;
@@ -276,9 +322,22 @@ public class Player : NetworkBehaviour
 
     public void Die()
     {
+<<<<<<< Updated upstream
         PlayerDeathEventRpc();
+=======
+        life--;
+        Debug.Log("current life " + life.ToString());
+        
+            IsDead();
+        
+>>>>>>> Stashed changes
     }
+    public bool IsDead()
+    {
+        if (life == 0)
+            return isDead = true;
 
+<<<<<<< Updated upstream
     [Rpc(SendTo.ClientsAndHost)]
     private void PlayerDeathEventRpc()
     {
@@ -326,4 +385,10 @@ public class Player : NetworkBehaviour
     //        PlayerDeathEvent();
     //    }
     //}
+=======
+        else 
+            return isDead = false;
+
+    }
+>>>>>>> Stashed changes
 }
