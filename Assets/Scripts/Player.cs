@@ -183,7 +183,7 @@ public class Player : NetworkBehaviour
 
         // Return weapon to its original position
         weapon.transform.localPosition = originalPosition;
-        weapon.GetComponent<Weapon>().collider.enabledenabled = false;
+        weapon.GetComponent<Weapon>().collider.enabled = false;
         isAttacking = false;
 
     }
@@ -266,6 +266,7 @@ public class Player : NetworkBehaviour
         {
             Debug.Log("FunctionHit!");
             gameObject.transform.position = new Vector3(newTransform.x, newTransform.y, 0);
+            gameObject.transform.rotation = Quaternion.identity;
         }
         else
         {
@@ -274,15 +275,18 @@ public class Player : NetworkBehaviour
        
     }
 
+    
+
     public void Die()
     {
-        PlayerDeathEvent();
+        PlayerDeathEventRpc();
     }
 
-    private void PlayerDeathEvent()
+    [Rpc(SendTo.ClientsAndHost)]
+    private void PlayerDeathEventRpc()
     {
         Vector3 deathZone = new Vector3(9999999f, 9999999f, 0f);
-        // Player fucks off
+        
         SetNewTransform(deathZone);
 
         gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
@@ -318,11 +322,11 @@ public class Player : NetworkBehaviour
         gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Weapon")
-        {
-            PlayerDeathEvent();
-        }
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.tag == "Weapon")
+    //    {
+    //        PlayerDeathEvent();
+    //    }
+    //}
 }

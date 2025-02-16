@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.InputSystem;
@@ -13,5 +14,20 @@ public class Weapon : NetworkBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         collider = GetComponent<CapsuleCollider2D>();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            try
+            {
+                collision.gameObject.GetComponent<Player>().Die();
+            }
+            catch (Exception e) 
+            {
+                Debug.Log(e);
+            }
+        }
     }
 }
