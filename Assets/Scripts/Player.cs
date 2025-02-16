@@ -93,12 +93,12 @@ public class Player : NetworkBehaviour
             StartCoroutine(Dash());
         }
 
-        if (Input.GetMouseButtonDown(0) && isAttacking == false)
+        if (Input.GetMouseButtonDown(0) && isAttacking == false && playerManager.HasGameStarted == true)
         {
             CallAttackRpc();
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && playerManager.HasGameStarted == true)
             CallDefendRpc();
 
         if (Input.GetMouseButtonUp(1))
@@ -106,8 +106,6 @@ public class Player : NetworkBehaviour
 
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
         movement.y = Input.GetAxisRaw("Vertical");   // W/S or Up/Down
-
-        FlipPlayerRpc();
 
         // Test, remove later
         if (Input.GetKeyDown(KeyCode.R) && playerManager.HasGameStarted == true)
@@ -125,26 +123,28 @@ public class Player : NetworkBehaviour
     {
         if (movement.x < 0) 
         {
-           
+            transform.rotation = Quaternion.Euler(0, 0, 90f);
         }
         else if (movement.x > 0)
         {
-            player_SR.flipX = true;
+            transform.rotation = Quaternion.Euler(0, 0, 270f);
         }
         else if (movement.y < 0)
         {
-            player_SR.flipY = false;
+            transform.rotation = Quaternion.Euler(0, 0, 180f);
         }
         else if (movement.y > 0)
         {
-            player_SR.flipY = true;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
         }
+        
     }
 
     void FixedUpdate()
     {
         // Move player using Rigidbody2D
         rb.linearVelocity = movement * speed;
+        FlipPlayerRpc();
     }
 
     [Rpc(SendTo.ClientsAndHost)]
