@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -5,19 +6,20 @@ public class GameManager : NetworkBehaviour
 {
     PlayerManager playerManager = new PlayerManager();
     public int playerCounter;
-    // Get the reference from UIManager
+    // Get the reference from UIManager / for countdown if we do it....maybe just for the playtime?
 
     // When a player has 0 lives, call a method (a isDead bool) to change counter on GameManager / Counter has to be set up based on how many player we currently have
 
+    public float countdownTime = 180f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerCounter = playerManager.NumberOfPlayers;
 
-        // spawn players
-        playerManager.RespawnAllPlayers();
+        
         // calls StartMatch()
+        StartCoroutine(StartCountdown());
     }
 
     // Update is called once per frame
@@ -36,13 +38,34 @@ public class GameManager : NetworkBehaviour
     {
         //Handles globalTimer / UI? / which player won ( how do I check on that?)
 
-        string winner = playerManager.NumberOfPlayers.ToString();
+        if (playerCounter == 0)
+        {
+            string winner = playerManager.NumberOfPlayers.ToString();
 
-        Debug.Log("Winner is :" + winner);
+            Debug.Log("Winner is :" + winner);
+        }
+        else
+        {
+            Debug.Log("Time is up!");
+
+            
+        }
 
 
     }
+    IEnumerator StartCountdown()
+    {
+        float remainingTime = countdownTime;
 
+        while (remainingTime > 0)
+        {
+            Debug.Log("Time left: " + remainingTime);
+            yield return new WaitForSeconds(1f);
+            remainingTime--;
+        }
+
+        EndGame();
+    }
     /*
      * Create StartMatch()
      * re-enable player movement
