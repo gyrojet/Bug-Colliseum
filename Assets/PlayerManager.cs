@@ -9,6 +9,17 @@ using TMPro;
 
 public class PlayerManager : NetworkBehaviour
 {
+    private bool hasGameStarted;
+
+    public bool HasGameStarted
+    {
+        get { return hasGameStarted; }
+        set
+        {
+            hasGameStarted = value;
+        }
+    }
+
     [SerializeField] private List<GameObject> playersInClient = new List<GameObject>();
     [SerializeField] private List<Transform> playerPos = new List<Transform>();
 
@@ -26,6 +37,8 @@ public class PlayerManager : NetworkBehaviour
     {
         if (pmInstance == null)
             pmInstance = this;
+
+        hasGameStarted = false;
     }
 
     public void AddPlayerToList(GameObject playerToAdd)
@@ -123,6 +136,12 @@ public class PlayerManager : NetworkBehaviour
         {
             player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void SetGameStatusRpc(bool value)
+    {
+        hasGameStarted = value;
     }
 
     public void TEST_RespawnAllPlayers()

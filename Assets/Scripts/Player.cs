@@ -102,9 +102,13 @@ public class Player : NetworkBehaviour
 
         //movement = movement.normalized; // Prevents diagonal speed boost
 
-        if (Input.GetKeyDown(KeyCode.R) && !isDashing)
+        if (Input.GetKeyDown(KeyCode.R) && playerManager.HasGameStarted == true)
         {
             Die();
+        }
+        else
+        {
+            Debug.Log("Please start the game first!");
         }
     }
 
@@ -205,12 +209,13 @@ public class Player : NetworkBehaviour
         gameObject.layer = LayerMask.NameToLayer("IgnoreLayer");
 
         if (life > 0)
-            Invoke("RespawnPlayer", 2.5f);
+            Invoke("RespawnPlayerRpc", 2.5f);
         else
             Debug.Log("Ur dead lol");
     }
 
-    private void RespawnPlayer()
+    [Rpc(SendTo.ClientsAndHost)]
+    private void RespawnPlayerRpc()
     {
         player_SR.color = new Color(1f, 0f, 0f, 0.2f);
 
@@ -218,10 +223,11 @@ public class Player : NetworkBehaviour
 
         gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
-        Invoke("ResetPlayerCollision", 2.5f);
+        Invoke("ResetPlayerCollisionRpc", 2.5f);
     }
 
-    private void ResetPlayerCollision()
+    [Rpc(SendTo.ClientsAndHost)]
+    private void ResetPlayerCollisionRpc()
     {
         player_SR.color = new Color(1f, 1f, 1f, 1f);
 

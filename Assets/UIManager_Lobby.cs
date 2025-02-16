@@ -104,6 +104,7 @@ public class UIManager_Lobby : NetworkBehaviour
 
             if (startTimer_CountdownTime <= 0)
             {
+                pm.SetGameStatusRpc(true);
                 pm.UnfreezeAllPlayersRpc();
                 SetValueOfTimerUIRpc(false);
             }
