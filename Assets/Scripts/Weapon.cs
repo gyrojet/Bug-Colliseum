@@ -18,16 +18,19 @@ public class Weapon : NetworkBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        try
         {
-            try
+            if (collision.gameObject.tag == "Player")
             {
-                collision.gameObject.GetComponent<Player>().Die();
+                if (collision.gameObject.GetComponent<Player>().IsPlayerBlocking == false) 
+                {
+                    collision.gameObject.GetComponent <Player>().Die();
+                }
             }
-            catch (Exception e) 
-            {
-                Debug.Log(e);
-            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
         }
     }
 }

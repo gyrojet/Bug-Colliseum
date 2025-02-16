@@ -24,6 +24,8 @@ public class Player : NetworkBehaviour
         }
     }
 
+    public bool IsPlayerBlocking { get { return isDefending; } }
+
     private Rigidbody2D rb;
     [SerializeField] private Vector2 movement;
     private bool isDashing;
@@ -74,21 +76,17 @@ public class Player : NetworkBehaviour
 
         rb = GetComponent<Rigidbody2D>();
 
-        //playerManager.SetPositionRpc();
-
         shieldOriginalPosition = shield.transform.localPosition; // Store shield's starting position
 
     }
 
     void Update()
     {
-        Debug.Log($"IsOwner: {IsOwner}, Local Player ID: {NetworkManager.Singleton.LocalClientId}, Object Owner ID: {OwnerClientId}");
+        //Debug.Log($"IsOwner: {IsOwner}, Local Player ID: {NetworkManager.Singleton.LocalClientId}, Object Owner ID: {OwnerClientId}");
 
         if (!IsOwner) return;
 
         if (!Application.isFocused) return;
-
-        // Get Input
 
         if (Input.GetKeyDown(KeyCode.E) && !isDashing)
         {
@@ -109,10 +107,9 @@ public class Player : NetworkBehaviour
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
         movement.y = Input.GetAxisRaw("Vertical");   // W/S or Up/Down
 
-        //FlipPlayerRpc();
+        FlipPlayerRpc();
 
-        //movement = movement.normalized; // Prevents diagonal speed boost
-
+        // Test, remove later
         if (Input.GetKeyDown(KeyCode.R) && playerManager.HasGameStarted == true)
         {
             Die();
@@ -128,7 +125,7 @@ public class Player : NetworkBehaviour
     {
         if (movement.x < 0) 
         {
-           player_SR.flipX = false;
+           
         }
         else if (movement.x > 0)
         {
