@@ -7,9 +7,7 @@ using Unity.VisualScripting;
 public class Player : NetworkBehaviour
 {
 
-    GameManager gameManager;
-
-
+    
     private Camera player_MainCam;
 
     [SerializeField] private float speed = 5f;
@@ -31,8 +29,10 @@ public class Player : NetworkBehaviour
     public bool IsPlayerBlocking { get { return isDefending; } }
 
     private Rigidbody2D rb;
+
     [SerializeField] private Vector2 movement;
     private bool isDashing;
+
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private GameObject weapon;
@@ -43,7 +43,9 @@ public class Player : NetworkBehaviour
     private SpriteRenderer player_SR;
     [SerializeField] private int life = 3;
     public bool isDead =false;
+
     [SerializeField] PlayerManager playerManager;
+    [SerializeField] GameManager gameManager;
 
 
 
@@ -308,7 +310,7 @@ public class Player : NetworkBehaviour
         else
         {
             isDead = true;
-            gameManager.playerCounter--;
+            gameManager.playerCounter-T-;
         }
             //Debug.Log("Ur dead lol");
     }
