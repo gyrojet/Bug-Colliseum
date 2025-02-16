@@ -6,6 +6,8 @@ using Unity.VisualScripting;
 
 public class Player : NetworkBehaviour
 {
+    private Camera player_MainCam;
+
     [SerializeField] private float speed = 5f;
     [SerializeField] private float originalSpeed = 5f;
 
@@ -23,13 +25,14 @@ public class Player : NetworkBehaviour
     }
 
     private Rigidbody2D rb;
-    private Vector2 movement;
+    [SerializeField] private Vector2 movement;
     private bool isDashing;
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashDuration = 0.2f;
-    //[SerializeField] private GameObject weapon;
-    //[SerializeField] private GameObject shield;
+    [SerializeField] private GameObject weapon;
+    [SerializeField] private GameObject shield;
     private bool isDefending = false;
+    private bool isAttacking = false;
     private Vector3 shieldOriginalPosition;
     private SpriteRenderer player_SR;
     [SerializeField] private int life = 3;
@@ -61,6 +64,8 @@ public class Player : NetworkBehaviour
             playerIndex = playerManager.NumberOfPlayers - 1;
 
             player_SR = GetComponent<SpriteRenderer>();
+
+            player_MainCam = Camera.main;
         }
         catch
         {
@@ -70,8 +75,8 @@ public class Player : NetworkBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         //playerManager.SetPositionRpc();
-        
-        //shieldOriginalPosition = shield.transform.localPosition; // Store shield's starting position
+
+        shieldOriginalPosition = shield.transform.localPosition; // Store shield's starting position
 
     }
 
@@ -89,16 +94,22 @@ public class Player : NetworkBehaviour
         {
             StartCoroutine(Dash());
         }
-        //if (Input.GetMouseButtonDown(0) )
-        //    StartCoroutine(Attack());aaaa
 
-        //if (Input.GetMouseButtonDown(1))
-        //    StartCoroutine(Defend());
-        //if (Input.GetMouseButtonUp(1))
-        //    LowerShield();
+        if (Input.GetMouseButtonDown(0) && isAttacking == false)
+        {
+            CallAttackRpc();
+        }
+
+        if (Input.GetMouseButtonDown(1))
+            CallDefendRpc();
+
+        if (Input.GetMouseButtonUp(1))
+            CallLowerShieldRpc();
 
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
         movement.y = Input.GetAxisRaw("Vertical");   // W/S or Up/Down
+
+        //FlipPlayerRpc();
 
         //movement = movement.normalized; // Prevents diagonal speed boost
 
@@ -112,45 +123,115 @@ public class Player : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
+    private void FlipPlayerRpc()
+    {
+        if (movement.x < 0) 
+        {
+           player_SR.flipX = false;
+        }
+        else if (movement.x > 0)
+        {
+            player_SR.flipX = true;
+        }
+        else if (movement.y < 0)
+        {
+            player_SR.flipY = false;
+        }
+        else if (movement.y > 0)
+        {
+            player_SR.flipY = true;
+        }
+    }
+
     void FixedUpdate()
     {
         // Move player using Rigidbody2D
         rb.linearVelocity = movement * speed;
     }
 
-    //IEnumerator Attack()
-    //{
-    //    Vector3 originalPosition = weapon.transform.localPosition; // Save the original position (relative to parent)
+    [Rpc(SendTo.ClientsAndHost)]
+    private void UpdateLookPositionRpc()
+    {
+        LookAtCursor();
+    }
 
-    //    // Move weapon slightly forward
-    //    weapon.transform.localPosition += new Vector3(0.5f, 0, 0); // Adjust the offset as needed
-    //    yield return new WaitForSeconds(0.1f); // Pause for a short time
+    private void LookAtCursor()
+    {
+        Vector3 mousePosition = (Vector2)player_MainCam.ScreenToWorldPoint(Input.mousePosition);
 
-    //    // Return weapon to its original position
-    //    weapon.transform.localPosition = originalPosition;
+        float angleRad = Mathf.Atan2(
+            mousePosition.y - transform.position.y,
+            mousePosition.x - transform.position.x);
 
-    //}
+        float angleDeg = (180 / Mathf.PI * angleRad - 90);
 
-    //IEnumerator Defend()
-    //{
-    //    isDefending = true;
+        transform.rotation = Quaternion.Euler(0f, 0f, angleDeg);
+    }
 
-    //    // Move weapon slightly forward
-    //    shield.transform.localPosition += new Vector3(0, 0.5f, 0); // Adjust the offset as needed
-    //    yield return new WaitForSeconds(1f); // Pause for a short time
+    IEnumerator Attack()
+    {
+        isAttacking = true;
 
-    //    // Return weapon to its original position
-    //    LowerShield();
+        Vector3 originalPosition = weapon.transform.localPosition; // Save the original position (relative to parent)
+
+        // Move weapon slightly forward
+        weapon.transform.localPosition += new Vector3(0f, 0.5f, 0); // Adjust the offset as needed
+        weapon.GetComponent<Weapon>().collider.enabled = true;
+
+        yield return new WaitForSeconds(0.1f); // Pause for a short time
+
+        // Return weapon to its original position
+        weapon.transform.localPosition = originalPosition;
+        weapon.GetComponent<Weapon>().collider.enabledenabled = false;
+        isAttacking = false;
+
+    }
+
+    IEnumerator Defend()
+    {
+        isDefending = true;
+
+        // Move weapon slightly forward
+        shield.transform.localPosition += new Vector3(0, 0.5f, 0); // Adjust the offset as needed
+        shield.GetComponent<CapsuleCollider2D>().enabled = true;
+
+        yield return new WaitForSeconds(1f); // Pause for a short time
+
+        // Return weapon to its original position
+        LowerShield();
 
 
-    //}
+    }
 
-    //void LowerShield()
-    //{
-    //    shield.transform.localPosition = shieldOriginalPosition;
+    void LowerShield()
+    {
+        shield.transform.localPosition = shieldOriginalPosition;
 
-    //    isDefending = false;
-    //}
+        if (shield.GetComponent<CapsuleCollider2D>().enabled != false)
+            shield.GetComponent <CapsuleCollider2D>().enabled = false;
+
+        isDefending = false;
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void CallAttackRpc()
+    {
+        StartCoroutine(Attack());
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void CallDefendRpc()
+    {
+        StartCoroutine(Defend());
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void CallLowerShieldRpc()
+    {
+        LowerShield();
+    }
+
     IEnumerator Dash()
     {
         isDashing = true;
@@ -208,6 +289,9 @@ public class Player : NetworkBehaviour
 
         gameObject.layer = LayerMask.NameToLayer("IgnoreLayer");
 
+        life--;
+        Debug.Log($"Current Life: {life}");
+
         if (life > 0)
             Invoke("RespawnPlayerRpc", 2.5f);
         else
@@ -233,35 +317,12 @@ public class Player : NetworkBehaviour
 
         gameObject.layer = LayerMask.NameToLayer("Player");
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-       
-            if (collision.gameObject.CompareTag("Weapon"))
-            {
-
-                Debug.Log("Collide with weapon");
-
-            Damage();
-
-
-            }
-        if (collision.gameObject.CompareTag("Shield") && isDefending)
+        if (collision.gameObject.tag == "Weapon")
         {
-
-            Debug.Log("Collide with shield/defended");
-
-
-
+            PlayerDeathEvent();
         }
     }
-
-    void Damage()
-    {
-        life--;
-        Debug.Log("current life " + life.ToString());
-    }
-
-    // Death Event
-    // Work on tommorow
-
 }
