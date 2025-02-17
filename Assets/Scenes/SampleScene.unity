@@ -410,8 +410,8 @@ MonoBehaviour:
   playerRotations:
   - {x: 0, y: 0, z: 180}
   - {x: 0, y: 0, z: 270}
-  - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 90}
+  - {x: 0, y: 0, z: 0}
   playerGraphics: []
   joinCodeField: {fileID: 740398564}
 --- !u!4 &100970812

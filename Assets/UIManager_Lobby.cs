@@ -23,7 +23,7 @@ public class UIManager_Lobby : NetworkBehaviour
 
     private void Start()
     {
-        startGame.onClick.AddListener(StartGame_TEST);
+        startGame.onClick.AddListener(StartGame);
 
         timer_InitialTime = startTimer_CountdownTime;
     }
@@ -52,9 +52,9 @@ public class UIManager_Lobby : NetworkBehaviour
         }
     }
 
-    private void StartGame_TEST()
+    private void StartGame()
     {
-        if (IsHost)
+        if (IsHost && pm.HasGameStarted == false)
         {
             SetValueOfLobbyUIRpc(false);
 
@@ -68,8 +68,11 @@ public class UIManager_Lobby : NetworkBehaviour
         {
             Debug.Log("NOT HOST");
         }
+    }
 
-        
+    public void GameOverReset()
+    {
+        pm.SetGameStatusRpc(false);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
