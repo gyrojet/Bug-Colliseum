@@ -18,7 +18,7 @@ public class Weapon : NetworkBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             if (collision.gameObject.GetComponent<Player>().isDefending ==  false) 
             {

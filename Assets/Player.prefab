@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  playerRotation: {x: 0, y: 0, z: 0}
   speed: 5
   originalSpeed: 5
   playerIndex: 0
@@ -420,7 +421,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   spriteRenderer: {fileID: 0}
   collider: {fileID: 0}
-  player: {fileID: 0}
 --- !u!1 &5562655289235397557
 GameObject:
   m_ObjectHideFlags: 0

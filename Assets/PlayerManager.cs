@@ -46,24 +46,6 @@ public class PlayerManager : NetworkBehaviour
         playersInClient.Add(playerToAdd);
     }
 
-    //[Rpc(SendTo.ClientsAndHost)]
-    //public void SetPositionRpc()
-    //{
-    //    try
-    //    {
-    //        Debug.Log("RUN");
-    //        for (int counter = 0; counter < playersInClient.Count; counter++)
-    //        {
-    //            Transform tf = playerPos[counter];
-    //            playersInClient[counter].GetComponent<Player>().SetNewTransform(tf);
-    //        }
-    //    }
-    //    catch (Exception ex) 
-    //    {
-    //        Debug.Log(ex);
-    //    }
-    //}
-
     [Rpc(SendTo.ClientsAndHost)]
     public void AssignPlayerSpawnPointRpc()
     {
@@ -130,6 +112,7 @@ public class PlayerManager : NetworkBehaviour
         foreach (GameObject player in playersInClient)
         {
             player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+            player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
 

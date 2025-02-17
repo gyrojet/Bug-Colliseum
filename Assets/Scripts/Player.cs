@@ -7,10 +7,7 @@ using Unity.VisualScripting;
 public class Player : NetworkBehaviour
 {
     [SerializeField] private Vector3 playerRotation;
-   //private Sprite playerGraphics;
-    
-    private Camera player_MainCam;
-
+    //private Sprite playerGraphics;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float originalSpeed = 5f;
 
@@ -79,6 +76,7 @@ public class Player : NetworkBehaviour
             playerIndex = playerManager.NumberOfPlayers - 1;
 
             player_SR = GetComponent<SpriteRenderer>();
+            rb = GetComponent<Rigidbody2D>();
 
             GetAndSetRotation();
         }
@@ -238,6 +236,8 @@ public class Player : NetworkBehaviour
     {
         if (newTransform != null) 
         {
+            rb.constraints = RigidbodyConstraints2D.None;
+
             Debug.Log("FunctionHit!");
             gameObject.transform.position = new Vector3(newTransform.x, newTransform.y, 0);
             gameObject.transform.rotation = Quaternion.Euler(playerRotation);
@@ -265,13 +265,13 @@ public class Player : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     private void PlayerDeathEventRpc()
     {
+        gameObject.layer = LayerMask.NameToLayer("IgnoreLayer");
+
         Vector3 deathZone = new Vector3(9999999f, 9999999f, 0f);
         
         SetNewTransform(deathZone);
 
-        gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-
-        gameObject.layer = LayerMask.NameToLayer("IgnoreLayer");
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
         life -= 1;
         Debug.Log($"Current Life: {life}");
@@ -292,7 +292,8 @@ public class Player : NetworkBehaviour
 
         SetNewTransform(SpawnPoint.transform.position);
 
-        gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        rb.constraints = RigidbodyConstraints2D.None;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         Invoke("ResetPlayerCollisionRpc", 2.5f);
     }
