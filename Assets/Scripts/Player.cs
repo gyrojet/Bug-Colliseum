@@ -6,7 +6,8 @@ using Unity.VisualScripting;
 
 public class Player : NetworkBehaviour
 {
-
+    [SerializeField] private Vector3 playerRotation;
+   //private Sprite playerGraphics;
     
     private Camera player_MainCam;
 
@@ -35,13 +36,19 @@ public class Player : NetworkBehaviour
 
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashDuration = 0.2f;
+
     [SerializeField] private GameObject weapon;
     [SerializeField] private GameObject shield;
+
     public bool isDefending = false;
     private bool isAttacking = false;
+
     private Vector3 shieldOriginalPosition;
+
     private SpriteRenderer player_SR;
+
     [SerializeField] private int life = 3;
+
     public bool isDead =false;
 
     [SerializeField] PlayerManager playerManager;
@@ -73,7 +80,7 @@ public class Player : NetworkBehaviour
 
             player_SR = GetComponent<SpriteRenderer>();
 
-            player_MainCam = Camera.main;
+            GetAndSetRotation();
         }
         catch
         {
@@ -88,8 +95,6 @@ public class Player : NetworkBehaviour
 
     void Update()
     {
-        //Debug.Log($"IsOwner: {IsOwner}, Local Player ID: {NetworkManager.Singleton.LocalClientId}, Object Owner ID: {OwnerClientId}");
-
         if (!IsOwner) return;
 
         if (!Application.isFocused) return;
@@ -113,37 +118,15 @@ public class Player : NetworkBehaviour
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
         movement.y = Input.GetAxisRaw("Vertical");   // W/S or Up/Down
 
-        // Test, remove later
-        if (Input.GetKeyDown(KeyCode.R) && playerManager.HasGameStarted == true)
-        {
-            Die();
-        }
-        else
-        {
-            Debug.Log("Please start the game first!");
-        }
-    }
-
-    [Rpc(SendTo.ClientsAndHost)]
-    private void FlipPlayerRpc()
-    {
-        if (movement.x < 0) 
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 90f);
-        }
-        else if (movement.x > 0)
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 270f);
-        }
-        else if (movement.y < 0)
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 180f);
-        }
-        else if (movement.y > 0)
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-        
+        //// Test, remove later
+        //if (Input.GetKeyDown(KeyCode.R) && playerManager.HasGameStarted == true)
+        //{
+        //    Die();
+        //}
+        //else
+        //{
+        //    Debug.Log("Please start the game first!");
+        //}
     }
 
     void FixedUpdate()
@@ -151,25 +134,6 @@ public class Player : NetworkBehaviour
         // Move player using Rigidbody2D
         rb.linearVelocity = movement * speed;
         //FlipPlayerRpc();
-    }
-
-    [Rpc(SendTo.ClientsAndHost)]
-    private void UpdateLookPositionRpc()
-    {
-        LookAtCursor();
-    }
-
-    private void LookAtCursor()
-    {
-        Vector3 mousePosition = (Vector2)player_MainCam.ScreenToWorldPoint(Input.mousePosition);
-
-        float angleRad = Mathf.Atan2(
-            mousePosition.y - transform.position.y,
-            mousePosition.x - transform.position.x);
-
-        float angleDeg = (180 / Mathf.PI * angleRad - 90);
-
-        transform.rotation = Quaternion.Euler(0f, 0f, angleDeg);
     }
 
     IEnumerator Attack()
@@ -215,6 +179,13 @@ public class Player : NetworkBehaviour
             shield.GetComponent <CapsuleCollider2D>().enabled = false;
 
         isDefending = false;
+    }
+
+    
+    private void GetAndSetRotation()
+    {
+        playerRotation = playerManager.GetPlayerRotation(playerIndex);
+        transform.Rotate(playerRotation);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -269,7 +240,7 @@ public class Player : NetworkBehaviour
         {
             Debug.Log("FunctionHit!");
             gameObject.transform.position = new Vector3(newTransform.x, newTransform.y, 0);
-            gameObject.transform.rotation = Quaternion.identity;
+            gameObject.transform.rotation = Quaternion.Euler(playerRotation);
         }
         else
         {
@@ -302,7 +273,7 @@ public class Player : NetworkBehaviour
 
         gameObject.layer = LayerMask.NameToLayer("IgnoreLayer");
 
-        life--;
+        life -= 1;
         Debug.Log($"Current Life: {life}");
 
         if (life > 0)
@@ -310,7 +281,6 @@ public class Player : NetworkBehaviour
         else
         {
             isDead = true;
-            gameManager.playerCounter--;
         }
             //Debug.Log("Ur dead lol");
     }
@@ -335,11 +305,4 @@ public class Player : NetworkBehaviour
         gameObject.layer = LayerMask.NameToLayer("Player");
     }
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.tag == "Weapon")
-    //    {
-    //        PlayerDeathEvent();
-    //    }
-    //}
 }

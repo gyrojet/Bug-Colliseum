@@ -21,9 +21,9 @@ public class PlayerManager : NetworkBehaviour
     }
 
     [SerializeField] private List<GameObject> playersInClient = new List<GameObject>();
-    [SerializeField] private List<Transform> playerPos = new List<Transform>();
-
     [SerializeField] private List<Transform> matchSpawnPoints = new List<Transform>();
+    [SerializeField] private List<Vector3> playerRotations = new List<Vector3>();
+    [SerializeField] private List<Sprite> playerGraphics = new List<Sprite>();
 
     [SerializeField] public static PlayerManager pmInstance;
 
@@ -44,11 +44,6 @@ public class PlayerManager : NetworkBehaviour
     public void AddPlayerToList(GameObject playerToAdd)
     {
         playersInClient.Add(playerToAdd);
-    }
-
-    public void RemovePlayerFromList(GameObject playerToRemove)
-    {
-        playersInClient.Remove(playerToRemove);
     }
 
     //[Rpc(SendTo.ClientsAndHost)]
@@ -105,7 +100,7 @@ public class PlayerManager : NetworkBehaviour
         {
             Player playerTemp;
 
-            for (int counter = 0;counter < playersInClient.Count; counter++)
+            for (int counter = 0; counter < playersInClient.Count; counter++)
             {
                 playerTemp = playersInClient[counter].GetComponent<Player>();
 
@@ -123,7 +118,7 @@ public class PlayerManager : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     public void FreezeAllPlayersRpc()
     {
-        foreach (GameObject player in playersInClient) 
+        foreach (GameObject player in playersInClient)
         {
             player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         }
@@ -148,5 +143,10 @@ public class PlayerManager : NetworkBehaviour
     {
         AssignPlayerSpawnPointRpc();
         ReturnAllPlayersToSpawnPointRpc();
+    }
+
+    public Vector3 GetPlayerRotation(int playerIndex)
+    {
+        return playerRotations[playerIndex];
     }
 }
