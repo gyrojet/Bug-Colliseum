@@ -150,7 +150,7 @@ public class Player : NetworkBehaviour
     {
         // Move player using Rigidbody2D
         rb.linearVelocity = movement * speed;
-        FlipPlayerRpc();
+        //FlipPlayerRpc();
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -310,7 +310,7 @@ public class Player : NetworkBehaviour
         else
         {
             isDead = true;
-            gameManager.playerCounter-T-;
+            gameManager.playerCounter--;
         }
             //Debug.Log("Ur dead lol");
     }

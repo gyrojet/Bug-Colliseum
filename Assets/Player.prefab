@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: -3325390810796796541}
   - component: {fileID: -2727536890645196065}
   - component: {fileID: 9080269621555058783}
-  - component: {fileID: 3413386599171030339}
-  - component: {fileID: 4956528030687524250}
+  - component: {fileID: 5920175962287216036}
+  - component: {fileID: 5028947095501731505}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -143,7 +143,9 @@ MonoBehaviour:
   weapon: {fileID: 4221628649417602672}
   shield: {fileID: 5562655289235397557}
   life: 3
+  isDead: 0
   playerManager: {fileID: 0}
+  gameManager: {fileID: 0}
 --- !u!50 &-2727536890645196065
 Rigidbody2D:
   serializedVersion: 5
@@ -223,7 +225,7 @@ PolygonCollider2D:
       - {x: 0.5, y: -0.28866667}
       - {x: 0.0026405156, y: 0.5735896}
   m_UseDelaunayMesh: 0
---- !u!114 &3413386599171030339
+--- !u!114 &5920175962287216036
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -232,11 +234,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2906831890331114665}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: da52bf8bbc1de48cfb221a6ff30f7972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  NetworkTransformExpanded: 0
+  NetworkTransformExpanded: 1
   AuthorityMode: 0
   TickSyncChildren: 0
   UseUnreliableDeltas: 0
@@ -259,7 +261,7 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &4956528030687524250
+--- !u!114 &5028947095501731505
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
