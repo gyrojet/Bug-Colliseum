@@ -42,7 +42,7 @@ public class Player : NetworkBehaviour
 
     private Vector3 shieldOriginalPosition;
 
-    private SpriteRenderer player_SR;
+    public SpriteRenderer player_SR;
 
     [SerializeField] private int life = 3;
 

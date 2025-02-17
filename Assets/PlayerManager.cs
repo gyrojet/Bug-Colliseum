@@ -86,6 +86,10 @@ public class PlayerManager : NetworkBehaviour
             {
                 playerTemp = playersInClient[counter].GetComponent<Player>();
 
+                playerTemp.player_SR.color = new Color(1f, 1f, 1f, 1f);
+
+                playerTemp.gameObject.layer = LayerMask.NameToLayer("Player");
+
                 playerTemp.SetNewTransform(playerTemp.SpawnPoint.transform.position);
 
                 Debug.Log($"Set transform for player: {playerTemp.playerIndex}");

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
-    PlayerManager playerManager = new PlayerManager();
+    PlayerManager playerManager = null;
+    UIManager_Lobby uiManager = null;
     public int playerCounter;
     // Get the reference from UIManager / for countdown if we do it....maybe just for the playtime?
 
@@ -12,12 +13,21 @@ public class GameManager : NetworkBehaviour
 
     public float countdownTime = 180f;
 
+    public static GameManager instance;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerCounter = playerManager.NumberOfPlayers;
+        if (instance == null)
+            instance = this;
 
-        
+        if (playerManager == null)
+            playerManager = PlayerManager.pmInstance;
+
+        if (uiManager == null)
+            uiManager = UIManager_Lobby.instance;
+
+        //playerCounter = playerManager.NumberOfPlayers;
         // calls StartMatch()
         StartCoroutine(StartCountdown());
     }
@@ -27,10 +37,16 @@ public class GameManager : NetworkBehaviour
     {
         //check for players status
         //if only one alive call endGame
-        if (playerCounter == 0)
-            EndGame();
+        //if (playerCounter == 0)
+        //    uiManager.EndGame();
         
         //if time`s up, call EndGame
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    public void GetPlayerCounterRpc()
+    {
+        playerCounter = playerManager.NumberOfPlayers;
     }
 
 
@@ -67,7 +83,7 @@ public class GameManager : NetworkBehaviour
             remainingTime--;
         }
 
-        EndGame();
+        //EndGame();
     }
     /*
      * Create StartMatch()

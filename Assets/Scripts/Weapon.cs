@@ -10,6 +10,7 @@ public class Weapon : NetworkBehaviour
     public SpriteRenderer spriteRenderer;
     public CapsuleCollider2D collider;
     
+    public GameManager gameManager;
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();

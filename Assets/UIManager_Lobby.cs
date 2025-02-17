@@ -19,10 +19,17 @@ public class UIManager_Lobby : NetworkBehaviour
     [SerializeField] int startTimer_CountdownTime = 3;
     private int timer_InitialTime;
 
-    
+    GameManager gameManager = null;
+
+    public static UIManager_Lobby instance;
 
     private void Start()
     {
+        if (gameManager == null) 
+        {
+            gameManager = GameManager.instance;
+        }
+
         startGame.onClick.AddListener(StartGame);
 
         timer_InitialTime = startTimer_CountdownTime;
@@ -56,6 +63,8 @@ public class UIManager_Lobby : NetworkBehaviour
     {
         if (IsHost && pm.HasGameStarted == false)
         {
+            gameManager.playerCounter = pm.NumberOfPlayers;
+
             SetValueOfLobbyUIRpc(false);
 
             pm.RespawnAllPlayers();            // Send all players to spawn points
@@ -68,6 +77,17 @@ public class UIManager_Lobby : NetworkBehaviour
         {
             Debug.Log("NOT HOST");
         }
+    }
+
+    public void EndGame()
+    {
+        Debug.Log("GAME OVER!!!!!!");
+
+        pm.SetGameStatusRpc(false);
+        SetValueOfLobbyUIRpc(true);
+
+        pm.RespawnAllPlayers();
+        pm.UnfreezeAllPlayersRpc();
     }
 
     public void GameOverReset()
