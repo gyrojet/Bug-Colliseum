@@ -32,6 +32,7 @@ public class PlayerManager : NetworkBehaviour
 
     public int NumberOfPlayers { get { return playersInClient.Count; } }
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -44,6 +45,10 @@ public class PlayerManager : NetworkBehaviour
     public void AddPlayerToList(GameObject playerToAdd)
     {
         playersInClient.Add(playerToAdd);
+    }
+    public void RemovePlayerToList(GameObject playerToAdd)
+    {
+        playersInClient.Remove(playerToAdd);
     }
 
     [Rpc(SendTo.ClientsAndHost)]

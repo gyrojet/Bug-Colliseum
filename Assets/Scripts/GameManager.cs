@@ -39,10 +39,12 @@ public class GameManager : NetworkBehaviour
     {
         //check for players status
         //if only one alive call endGame
-        //if (playerCounter == 0)
+        Debug.Log("PLAER COUNT" + playerCounter.ToString());
+        if (playerCounter == 1)
+            EndGame();
         //    uiManager.EndGame();
-        
-        //if time`s up, call EndGame
+
+            //if time`s up, call EndGame
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -55,12 +57,12 @@ public class GameManager : NetworkBehaviour
     void EndGame()
     {
         //Handles globalTimer / UI? / which player won ( how do I check on that?)
+        Debug.Log(playerCounter.ToString());
 
-        if (playerCounter == 0)
+        if (playerCounter == 1)
         {
-            string winner = playerManager.NumberOfPlayers.ToString();
-
-            Debug.Log("Winner is :" + winner);
+            Debug.Log("You Win!!");
+            //StopCoroutine(StartCountdown());
         }
         else
         {
@@ -80,13 +82,13 @@ public class GameManager : NetworkBehaviour
 
         while (remainingTime > 0)
         {
-            //Debug.Log("Time left: " + remainingTime);
+            Debug.Log("Time left: " + remainingTime);
             countDown.text = remainingTime.ToString();
             yield return new WaitForSeconds(1f);
             remainingTime--;
         }
 
-        //EndGame();
+        EndGame();
     }
     /*
      * Create StartMatch()
