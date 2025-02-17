@@ -37,7 +37,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private GameObject weapon;
     [SerializeField] private GameObject shield;
-    private bool isDefending = false;
+    public bool isDefending = false;
     private bool isAttacking = false;
     private Vector3 shieldOriginalPosition;
     private SpriteRenderer player_SR;
