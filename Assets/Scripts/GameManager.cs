@@ -29,7 +29,7 @@ public class GameManager : NetworkBehaviour
 
         //playerCounter = playerManager.NumberOfPlayers;
         // calls StartMatch()
-        StartCoroutine(StartCountdown());
+        //StartCoroutine(StartCountdown());
     }
 
     // Update is called once per frame
