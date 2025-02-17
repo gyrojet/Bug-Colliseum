@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class GameManager : NetworkBehaviour
     PlayerManager playerManager = null;
     UIManager_Lobby uiManager = null;
     public int playerCounter;
+    [SerializeField] private TextMeshProUGUI countDown;
     // Get the reference from UIManager / for countdown if we do it....maybe just for the playtime?
 
     // When a player has 0 lives, call a method (a isDead bool) to change counter on GameManager / Counter has to be set up based on how many player we currently have
@@ -78,7 +80,8 @@ public class GameManager : NetworkBehaviour
 
         while (remainingTime > 0)
         {
-            Debug.Log("Time left: " + remainingTime);
+            //Debug.Log("Time left: " + remainingTime);
+            countDown.text = remainingTime.ToString();
             yield return new WaitForSeconds(1f);
             remainingTime--;
         }
