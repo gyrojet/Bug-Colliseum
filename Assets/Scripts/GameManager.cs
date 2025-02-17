@@ -74,7 +74,7 @@ public class GameManager : NetworkBehaviour
 
 
     //ADD UI DISPLAY 
-    IEnumerator StartCountdown()
+    public IEnumerator StartCountdown()
     {
         float remainingTime = countdownTime;
 
