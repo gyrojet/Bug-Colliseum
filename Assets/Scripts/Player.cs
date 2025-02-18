@@ -104,12 +104,12 @@ public class Player : NetworkBehaviour
             StartCoroutine(Dash());
         }
 
-        if (Input.GetMouseButtonDown(0) && isAttacking == false && playerManager.HasGameStarted == true)
+        if (Input.GetMouseButtonDown(0) && isAttacking == false && playerManager.HasGameStarted == true && isDefending == false)
         {
             CallAttackRpc();
         }
 
-        if (Input.GetMouseButtonDown(1) && playerManager.HasGameStarted == true && isDefending == false)
+        if (Input.GetMouseButtonDown(1) && playerManager.HasGameStarted == true && isDefending == false && isAttacking == false)
             CallDefendRpc();
 
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
@@ -148,11 +148,15 @@ public class Player : NetworkBehaviour
     {
         isDefending = true;
 
+        player_SR.sprite = player_Defend;
+
         Debug.Log("Defense UP!");
 
         yield return new WaitForSeconds(1f); // Pause for a short time
 
         isDefending = false;
+
+        player_SR.sprite = player_Normal;
 
         Debug.Log("Defense DOWN!");
     }
@@ -177,7 +181,7 @@ public class Player : NetworkBehaviour
     private void GetAndSetGraphics()
     {
         player_Normal = playerManager.GetPlayerSprite(playerIndex);
-        // player_Defend = get defend idk
+        player_Defend = playerManager.GetPlayerDefenseSprites(playerIndex);
 
         player_SR.sprite = player_Normal;
 

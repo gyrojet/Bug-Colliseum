@@ -277,7 +277,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1291917975}
   m_HandleRect: {fileID: 1291917974}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -988,6 +988,11 @@ MonoBehaviour:
   - {fileID: 6550600014374081944, guid: 14434d713ade6c54894dd8589a6a27d0, type: 3}
   - {fileID: 8806820381219206865, guid: 6999eaabb7779064da3c0bb30b25311c, type: 3}
   - {fileID: -4906864666938018422, guid: 9b4626cd30b302643a14da986bd31944, type: 3}
+  playerDefenseSprites:
+  - {fileID: -231970022676186303, guid: b7ed7756239143e4898de4c65db47b24, type: 3}
+  - {fileID: 1787375999385505035, guid: f4820dff019d7434e95e2c5051a397bb, type: 3}
+  - {fileID: 4456169137916313165, guid: a7410e11c56ec2549a5467ccb688d5dd, type: 3}
+  - {fileID: 3090099983677239213, guid: da2552f8a1c09be45bc884d90e5e4968, type: 3}
   joinCodeField: {fileID: 740398564}
 --- !u!4 &100970812
 Transform:
@@ -4275,7 +4280,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1176560047}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999994
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
