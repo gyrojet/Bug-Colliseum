@@ -33,12 +33,13 @@ public class Player : NetworkBehaviour
     [SerializeField] private float dashDuration = 0.2f;                                 // Duration of a dash
 
     [SerializeField] private GameObject weapon;                                         // Player's weapon
-    //[SerializeField] private GameObject shield;                                         // May remove
-
+    
     public bool isDefending = false;                                                    // Player is/is not blocking
     private bool isAttacking = false;                                                   // Player is/is not attacking
 
     public SpriteRenderer player_SR;                                                    // Sprite Renderer
+    private Sprite player_Normal;
+    private Sprite player_Defend;
 
     [SerializeField] private int life = 3;                                              // PLayer's lives
    
@@ -90,8 +91,6 @@ public class Player : NetworkBehaviour
 
         rb = GetComponent<Rigidbody2D>();
 
-        /*hieldOriginalPosition = shield.transform.localPosition; // Store shield's starting position*/
-
     }
 
     void Update()
@@ -110,31 +109,17 @@ public class Player : NetworkBehaviour
             CallAttackRpc();
         }
 
-        if (Input.GetMouseButtonDown(1) && playerManager.HasGameStarted == true)
+        if (Input.GetMouseButtonDown(1) && playerManager.HasGameStarted == true && isDefending == false)
             CallDefendRpc();
-
-        if (Input.GetMouseButtonUp(1))
-            CallLowerShieldRpc();
 
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
         movement.y = Input.GetAxisRaw("Vertical");   // W/S or Up/Down
-
-        //// Test, remove later
-        //if (Input.GetKeyDown(KeyCode.R) && playerManager.HasGameStarted == true)
-        //{
-        //    Die();
-        //}
-        //else
-        //{
-        //    Debug.Log("Please start the game first!");
-        //}
     }
 
     void FixedUpdate()
     {
         // Move player using Rigidbody2D
         rb.linearVelocity = movement * speed;
-        //FlipPlayerRpc();
     }
 
     IEnumerator Attack()
@@ -163,16 +148,13 @@ public class Player : NetworkBehaviour
     {
         isDefending = true;
 
-        // Move weapon slightly forward
-        //shield.transform.localPosition += new Vector3(0, 0.5f, 0); // Adjust the offset as needed
-        //shield.GetComponent<CapsuleCollider2D>().enabled = true;
+        Debug.Log("Defense UP!");
 
         yield return new WaitForSeconds(1f); // Pause for a short time
 
-        // Return weapon to its original position
-        LowerShield();
+        isDefending = false;
 
-
+        Debug.Log("Defense DOWN!");
     }
 
     void LowerShield()
@@ -194,7 +176,11 @@ public class Player : NetworkBehaviour
 
     private void GetAndSetGraphics()
     {
-        player_SR.sprite = playerManager.GetPlayerSprite(playerIndex);
+        player_Normal = playerManager.GetPlayerSprite(playerIndex);
+        // player_Defend = get defend idk
+
+        player_SR.sprite = player_Normal;
+
         weapon.GetComponent<SpriteRenderer>().sprite = playerManager.GetPlayerWeapon(playerIndex);
     }
 
@@ -210,11 +196,7 @@ public class Player : NetworkBehaviour
         StartCoroutine(Defend());
     }
 
-    [Rpc(SendTo.ClientsAndHost)]
-    private void CallLowerShieldRpc()
-    {
-        LowerShield();
-    }
+
 
     IEnumerator Dash()
     {
