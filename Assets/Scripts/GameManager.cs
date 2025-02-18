@@ -39,15 +39,14 @@ public class GameManager : NetworkBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         //check for players status
         //if only one alive call endGame
         //Debug.Log("PLAYER COUNT" + playerCounter.ToString());
-        if (playerCounter <= 1)
+        if (playerCounter == 1)
         {
             EndGame();
-            RpcStopTimerRpc();
         }
         //    uiManager.EndGame();
 
@@ -66,10 +65,11 @@ public class GameManager : NetworkBehaviour
         //Handles globalTimer / UI? / which player won ( how do I check on that?)
         //Debug.Log(playerCounter.ToString());
 
-        if (playerCounter <= 1)
+        if (playerCounter == 1)
         {
             Debug.Log("You Win!!");
-            //winner.SetActive(true);
+            winner.SetActive(true);
+            //StopCoroutine(StartCountdown());
         }
         else
         {
@@ -80,12 +80,6 @@ public class GameManager : NetworkBehaviour
 
     }
 
-    [Rpc(SendTo.ClientsAndHost)]
-    private void RpcStopTimerRpc()
-    {
-        StopCoroutine(StartCountdown());
-        Debug.Log("Timer Stopped for all players.");
-    }
 
     //ADD UI DISPLAY 
     public IEnumerator StartCountdown()
