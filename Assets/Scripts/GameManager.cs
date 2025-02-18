@@ -83,7 +83,9 @@ public class GameManager : NetworkBehaviour
         if (playerCounter <= 1)
         {
             Debug.Log("You Win!!");
-            winner.SetActive(true); // Displays the winner UI
+            //winner.SetActive(true);
+
+            ResetGame();
         }
         else
         {
@@ -97,13 +99,7 @@ public class GameManager : NetworkBehaviour
    
     private void ResetGame()
     {
-        playerManager.SetGameStatusRpc(false);
-
-
-
-        playerManager.ReturnAllPlayersToSpawnPointRpc();
-
-        uiManager.SetValueOfLobbyUIRpc(true);
+        
     }
 
     //  Method Name        :  RpcStopTimerRpc
