@@ -97,6 +97,8 @@ public class PlayerManager : NetworkBehaviour
 
                 playerTemp.gameObject.layer = LayerMask.NameToLayer("Player");
 
+                playerTemp.life = 3;
+
                 playerTemp.SetNewTransform(playerTemp.SpawnPoint.transform.position);
 
                 Debug.Log($"Set transform for player: {playerTemp.playerIndex}");
