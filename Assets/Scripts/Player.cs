@@ -83,6 +83,7 @@ public class Player : NetworkBehaviour
 
             GetAndSetRotation();
             GetAndSetGraphics();
+            
         }
         catch
         {
@@ -147,12 +148,15 @@ public class Player : NetworkBehaviour
         // Move weapon slightly forward
         weapon.transform.localPosition += new Vector3(0f, 0.5f, 0); // Adjust the offset as needed
         weapon.GetComponent<Weapon>().collider.enabled = true;
+        weapon.GetComponent<SpriteRenderer>().enabled = true;
 
         yield return new WaitForSeconds(0.1f); // Pause for a short time
 
         // Return weapon to its original position
         weapon.transform.localPosition = originalPosition;
         weapon.GetComponent<Weapon>().collider.enabled = false;
+        weapon.GetComponent<SpriteRenderer>().enabled = false;
+
         isAttacking = false;
 
     }
@@ -193,6 +197,7 @@ public class Player : NetworkBehaviour
     private void GetAndSetGraphics()
     {
         player_SR.sprite = playerManager.GetPlayerSprite(playerIndex);
+        weapon.GetComponent<SpriteRenderer>().sprite = playerManager.GetPlayerWeapon(playerIndex);
     }
 
     [Rpc(SendTo.ClientsAndHost)]

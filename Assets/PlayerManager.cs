@@ -24,6 +24,7 @@ public class PlayerManager : NetworkBehaviour
     [SerializeField] private List<Transform> matchSpawnPoints = new List<Transform>();
     [SerializeField] private List<Vector3> playerRotations = new List<Vector3>();
     [SerializeField] private List<Sprite> playerGraphics = new List<Sprite>();
+    [SerializeField] private List<Sprite> playerWeapons = new List<Sprite>();
 
     [SerializeField] public static PlayerManager pmInstance;
 
@@ -145,5 +146,10 @@ public class PlayerManager : NetworkBehaviour
     public Sprite GetPlayerSprite(int playerIndex) 
     {
         return playerGraphics[playerIndex];
+    }
+
+    public Sprite GetPlayerWeapon(int playerIndex)
+    {
+        return playerWeapons[playerIndex];
     }
 }
