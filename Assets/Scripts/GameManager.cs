@@ -41,10 +41,12 @@ public class GameManager : NetworkBehaviour
         //if only one alive call endGame
         Debug.Log("PLAYER COUNT" + playerCounter.ToString());
         if (playerCounter == 1)
+        {
             EndGame();
+        }
         //    uiManager.EndGame();
 
-            //if time`s up, call EndGame
+        //if time`s up, call EndGame
     }
 
     [Rpc(SendTo.ClientsAndHost)]

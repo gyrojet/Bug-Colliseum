@@ -298,6 +298,7 @@ public class Player : NetworkBehaviour
             {
                 isDead = true;
                 gameManager.playerCounter--;
+                Debug.Log("PLAYER COUNTER" +  gameManager.playerCounter);
             }
             //Debug.Log("Ur dead lol");
         }

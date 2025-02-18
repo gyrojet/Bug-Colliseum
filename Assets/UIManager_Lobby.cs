@@ -130,7 +130,9 @@ public class UIManager_Lobby : NetworkBehaviour
                 pm.SetGameStatusRpc(true);
                 pm.UnfreezeAllPlayersRpc();
                 SetValueOfTimerUIRpc(false);
-                StartCoroutine(gameManager.StartCountdown());
+
+                //Activate later
+                //StartCoroutine(gameManager.StartCountdown());
             }
         }
     }
