@@ -104,12 +104,12 @@ public class Player : NetworkBehaviour
             StartCoroutine(Dash());
         }
 
-        if (Input.GetMouseButtonDown(0) && isAttacking == false && isDefending == false && playerManager.HasGameStarted == true)
+        if (Input.GetMouseButtonDown(0) && isAttacking == false && playerManager.HasGameStarted == true)
         {
             CallAttackRpc();
         }
 
-        if (Input.GetMouseButtonDown(1) && playerManager.HasGameStarted == true && isDefending == false && isAttacking == false)
+        if (Input.GetMouseButtonDown(1) && playerManager.HasGameStarted == true && isDefending == false)
             CallDefendRpc();
 
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
@@ -148,16 +148,23 @@ public class Player : NetworkBehaviour
     {
         isDefending = true;
 
-        player_SR.sprite = player_Defend;
-
         Debug.Log("Defense UP!");
 
         yield return new WaitForSeconds(1f); // Pause for a short time
 
         isDefending = false;
 
-        player_SR.sprite = player_Normal;
         Debug.Log("Defense DOWN!");
+    }
+
+    void LowerShield()
+    {
+        //shield.transform.localPosition = shieldOriginalPosition;
+
+        //if (shield.GetComponent<CapsuleCollider2D>().enabled != false)
+        //    shield.GetComponent <CapsuleCollider2D>().enabled = false;
+
+        isDefending = false;
     }
 
     
@@ -170,19 +177,12 @@ public class Player : NetworkBehaviour
     private void GetAndSetGraphics()
     {
         player_Normal = playerManager.GetPlayerSprite(playerIndex);
-        player_Defend = playerManager.GetPlayerDefenseSprite(playerIndex);
+        // player_Defend = get defend idk
 
         player_SR.sprite = player_Normal;
 
         weapon.GetComponent<SpriteRenderer>().sprite = playerManager.GetPlayerWeapon(playerIndex);
     }
-
-    //[Rpc(SendTo.ClientsAndHost)]
-    //private void ChangeSpriteRpc(Sprite sprite)
-    //{
-    //    player_SR.sprite = sprite;
-    //}
-
 
     [Rpc(SendTo.ClientsAndHost)]
     private void CallAttackRpc()

@@ -988,11 +988,6 @@ MonoBehaviour:
   - {fileID: 6550600014374081944, guid: 14434d713ade6c54894dd8589a6a27d0, type: 3}
   - {fileID: 8806820381219206865, guid: 6999eaabb7779064da3c0bb30b25311c, type: 3}
   - {fileID: -4906864666938018422, guid: 9b4626cd30b302643a14da986bd31944, type: 3}
-  playerDefenseSprites:
-  - {fileID: 21300000, guid: f9e46ec66fb26cb48b49ee2ebd31e2d1, type: 3}
-  - {fileID: 21300000, guid: 1794b3e98b020b540862dacb0cb4fe71, type: 3}
-  - {fileID: 21300000, guid: 348a2429e4511f04fa80ef4ca949fcb5, type: 3}
-  - {fileID: 21300000, guid: e3f114bfc25ae7841851ac8a8a1e230d, type: 3}
   joinCodeField: {fileID: 740398564}
 --- !u!4 &100970812
 Transform:

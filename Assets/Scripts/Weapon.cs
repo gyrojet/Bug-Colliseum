@@ -8,13 +8,13 @@ using Unity.VisualScripting;
 public class Weapon : NetworkBehaviour
 {
     public SpriteRenderer spriteRenderer;
-    public CircleCollider2D collider;
+    public CapsuleCollider2D collider;
     
     public GameManager gameManager;
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        collider = GetComponent<CircleCollider2D>();
+        collider = GetComponent<CapsuleCollider2D>();
     }
 
     private void OnCollisionExit2D(Collision2D collision)
