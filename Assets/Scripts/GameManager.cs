@@ -39,7 +39,7 @@ public class GameManager : NetworkBehaviour
     {
         //check for players status
         //if only one alive call endGame
-        Debug.Log("PLAER COUNT" + playerCounter.ToString());
+        Debug.Log("PLAYER COUNT" + playerCounter.ToString());
         if (playerCounter == 1)
             EndGame();
         //    uiManager.EndGame();
