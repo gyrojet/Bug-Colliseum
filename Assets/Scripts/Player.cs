@@ -8,14 +8,14 @@ public class Player : NetworkBehaviour
 {
     [SerializeField] private Vector3 playerRotation;                                    // Player's Orientation
     //private Sprite playerGraphics;
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float originalSpeed = 5f;
+    [SerializeField] private float speed = 5f;                                          // Player's movespeed
+    [SerializeField] private float originalSpeed = 5f;                                  // Used when dashing
 
     [SerializeField] public int playerIndex;                                            // Use this to get UI/Spawn points
 
-    [SerializeField] private Transform player_RespawnPoint = null;
+    [SerializeField] private Transform player_RespawnPoint = null;                      // Player's assigned respawn point
 
-    public Transform SpawnPoint
+    public Transform SpawnPoint                                                         // Gets/sets respawn
     {
         get { return player_RespawnPoint; }
         set
@@ -24,31 +24,29 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public bool IsPlayerBlocking { get { return isDefending; } }
+    private Rigidbody2D rb;                                                             // Player's rigidbody
 
-    private Rigidbody2D rb;
+    [SerializeField] private Vector2 movement;                                          // Player's movement vector
+    private bool isDashing;                                                             // Is the player dashing?
 
-    [SerializeField] private Vector2 movement;
-    private bool isDashing;
+    [SerializeField] private float dashSpeed = 10f;                                     // Player's speed while dashing
+    [SerializeField] private float dashDuration = 0.2f;                                 // Duration of a dash
 
-    [SerializeField] private float dashSpeed = 10f;
-    [SerializeField] private float dashDuration = 0.2f;
+    [SerializeField] private GameObject weapon;                                         // Player's weapon
+    [SerializeField] private GameObject shield;                                         // May remove
 
-    [SerializeField] private GameObject weapon;
-    [SerializeField] private GameObject shield;
+    public bool isDefending = false;                                                    // Player is/is not blocking
+    private bool isAttacking = false;                                                   // Player is/is not attacking
 
-    public bool isDefending = false;
-    private bool isAttacking = false;
+    private Vector3 shieldOriginalPosition;                                             // May remove later
 
-    private Vector3 shieldOriginalPosition;
+    public SpriteRenderer player_SR;                                                    // Sprite Renderer
 
-    public SpriteRenderer player_SR;
+    [SerializeField] private int life = 3;                                              // PLayer's lives
+   
+    public bool isDead = false;                                                         // If player is dead
 
-    [SerializeField] private int life = 3;
-
-    public bool isDead =false;
-
-    [SerializeField] PlayerManager playerManager;
+    [SerializeField] PlayerManager playerManager;                                       // References to player, game manager
     [SerializeField] GameManager gameManager;
 
 
@@ -287,14 +285,17 @@ public class Player : NetworkBehaviour
         life -= 1;
         Debug.Log($"Current Life: {life}");
 
-        if (life > 0)
-            Invoke("RespawnPlayerRpc", 2.5f);
-        else if (life <= 0)
+        if (isDead == false)
         {
-            isDead = true;
-            gameManager.playerCounter--;
-        }
+            if (life > 0)
+                Invoke("RespawnPlayerRpc", 2.5f);
+            else if (life <= 0)
+            {
+                isDead = true;
+                gameManager.playerCounter--;
+            }
             //Debug.Log("Ur dead lol");
+        }
     }
 
     [Rpc(SendTo.ClientsAndHost)]
