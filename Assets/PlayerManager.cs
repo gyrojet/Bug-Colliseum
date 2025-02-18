@@ -6,6 +6,7 @@ using UnityEngine;
 using Unity.Services.Multiplayer;
 using UnityEngine.UI;
 using TMPro;
+using Unity.Multiplayer.Center.NetcodeForGameObjectsExample.DistributedAuthority;
 
 public class PlayerManager : NetworkBehaviour
 {
