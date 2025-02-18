@@ -7,6 +7,7 @@ public class GameManager : NetworkBehaviour
 {
     PlayerManager playerManager = null;
     UIManager_Lobby uiManager = null;
+
     public int playerCounter;
     [SerializeField] private TextMeshProUGUI countDown;
     [SerializeField] private GameObject timesUp;
@@ -81,6 +82,17 @@ public class GameManager : NetworkBehaviour
         }
 
 
+    }
+
+    private void ResetGame()
+    {
+        playerManager.SetGameStatusRpc(false);
+
+
+
+        playerManager.ReturnAllPlayersToSpawnPointRpc();
+
+        uiManager.SetValueOfLobbyUIRpc(true);
     }
 
     [Rpc(SendTo.ClientsAndHost)]

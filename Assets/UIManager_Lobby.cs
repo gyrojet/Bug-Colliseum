@@ -110,7 +110,7 @@ public class UIManager_Lobby : NetworkBehaviour
     }
 
     [Rpc(SendTo.ClientsAndHost)]
-    private void SetValueOfLobbyUIRpc(bool value)
+    public void SetValueOfLobbyUIRpc(bool value)
     {
         serverUI.SetActive(value);
     }

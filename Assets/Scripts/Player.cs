@@ -41,7 +41,7 @@ public class Player : NetworkBehaviour
     private Sprite player_Normal;
     private Sprite player_Defend;
 
-    [SerializeField] private int life = 3;                                              // PLayer's lives
+    [SerializeField] public int life = 3;                                               // PLayer's lives
    
     public bool isDead = false;                                                         // If player is dead
 
