@@ -104,12 +104,12 @@ public class Player : NetworkBehaviour
             StartCoroutine(Dash());
         }
 
-        if (Input.GetMouseButtonDown(0) && isAttacking == false && playerManager.HasGameStarted == true)
+        if (Input.GetMouseButtonDown(0) && isAttacking == false && playerManager.HasGameStarted == true && isDefending == false)
         {
             CallAttackRpc();
         }
 
-        if (Input.GetMouseButtonDown(1) && playerManager.HasGameStarted == true && isDefending == false)
+        if (Input.GetMouseButtonDown(1) && playerManager.HasGameStarted == true && isDefending == false && isAttacking == false)
             CallDefendRpc();
 
         movement.x = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
@@ -161,6 +161,16 @@ public class Player : NetworkBehaviour
         Debug.Log("Defense DOWN!");
     }
 
+    void LowerShield()
+    {
+        //shield.transform.localPosition = shieldOriginalPosition;
+
+        //if (shield.GetComponent<CapsuleCollider2D>().enabled != false)
+        //    shield.GetComponent <CapsuleCollider2D>().enabled = false;
+
+        isDefending = false;
+    }
+
     
     private void GetAndSetRotation()
     {
@@ -171,15 +181,12 @@ public class Player : NetworkBehaviour
     private void GetAndSetGraphics()
     {
         player_Normal = playerManager.GetPlayerSprite(playerIndex);
-        player_Defend = playerManager.GetPlayerDefenseSprite(playerIndex);
+        player_Defend = playerManager.GetPlayerDefenseSprites(playerIndex);
 
         player_SR.sprite = player_Normal;
 
         weapon.GetComponent<SpriteRenderer>().sprite = playerManager.GetPlayerWeapon(playerIndex);
     }
-
-    //[Rpc(SendTo.ClientsAndHost)]
-
 
     [Rpc(SendTo.ClientsAndHost)]
     private void CallAttackRpc()
