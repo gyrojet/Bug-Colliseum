@@ -7,7 +7,7 @@ public class GameManager : NetworkBehaviour
 {
     //  class Name    :   GameManager
     //
-    //  Developer           :   Julia Polak
+    //  Developer           :   Tyler Law, Julia Polak & Walesca Borges
     //                          
     //
     //  Synopsis            : Manages the game state, including player count, countdown timer, 
