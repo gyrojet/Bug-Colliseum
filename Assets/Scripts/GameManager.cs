@@ -9,6 +9,10 @@ public class GameManager : NetworkBehaviour
     UIManager_Lobby uiManager = null;
     public int playerCounter;
     [SerializeField] private TextMeshProUGUI countDown;
+    [SerializeField] private GameObject timesUp;
+    [SerializeField] private GameObject winner;
+
+
     // Get the reference from UIManager / for countdown if we do it....maybe just for the playtime?
 
     // When a player has 0 lives, call a method (a isDead bool) to change counter on GameManager / Counter has to be set up based on how many player we currently have
@@ -39,7 +43,7 @@ public class GameManager : NetworkBehaviour
     {
         //check for players status
         //if only one alive call endGame
-        Debug.Log("PLAYER COUNT" + playerCounter.ToString());
+        //Debug.Log("PLAYER COUNT" + playerCounter.ToString());
         if (playerCounter == 1)
         {
             EndGame();
@@ -59,18 +63,18 @@ public class GameManager : NetworkBehaviour
     void EndGame()
     {
         //Handles globalTimer / UI? / which player won ( how do I check on that?)
-        Debug.Log(playerCounter.ToString());
+        //Debug.Log(playerCounter.ToString());
 
         if (playerCounter == 1)
         {
             Debug.Log("You Win!!");
+            winner.SetActive(true);
             //StopCoroutine(StartCountdown());
         }
         else
         {
             Debug.Log("Time is up!");
-
-            
+            timesUp.SetActive(true);
         }
 
 
