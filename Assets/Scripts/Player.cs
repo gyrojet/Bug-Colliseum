@@ -33,12 +33,10 @@ public class Player : NetworkBehaviour
     [SerializeField] private float dashDuration = 0.2f;                                 // Duration of a dash
 
     [SerializeField] private GameObject weapon;                                         // Player's weapon
-    [SerializeField] private GameObject shield;                                         // May remove
+    //[SerializeField] private GameObject shield;                                         // May remove
 
     public bool isDefending = false;                                                    // Player is/is not blocking
     private bool isAttacking = false;                                                   // Player is/is not attacking
-
-    private Vector3 shieldOriginalPosition;                                             // May remove later
 
     public SpriteRenderer player_SR;                                                    // Sprite Renderer
 
@@ -92,7 +90,7 @@ public class Player : NetworkBehaviour
 
         rb = GetComponent<Rigidbody2D>();
 
-        shieldOriginalPosition = shield.transform.localPosition; // Store shield's starting position
+        /*hieldOriginalPosition = shield.transform.localPosition; // Store shield's starting position*/
 
     }
 
@@ -166,8 +164,8 @@ public class Player : NetworkBehaviour
         isDefending = true;
 
         // Move weapon slightly forward
-        shield.transform.localPosition += new Vector3(0, 0.5f, 0); // Adjust the offset as needed
-        shield.GetComponent<CapsuleCollider2D>().enabled = true;
+        //shield.transform.localPosition += new Vector3(0, 0.5f, 0); // Adjust the offset as needed
+        //shield.GetComponent<CapsuleCollider2D>().enabled = true;
 
         yield return new WaitForSeconds(1f); // Pause for a short time
 
@@ -179,10 +177,10 @@ public class Player : NetworkBehaviour
 
     void LowerShield()
     {
-        shield.transform.localPosition = shieldOriginalPosition;
+        //shield.transform.localPosition = shieldOriginalPosition;
 
-        if (shield.GetComponent<CapsuleCollider2D>().enabled != false)
-            shield.GetComponent <CapsuleCollider2D>().enabled = false;
+        //if (shield.GetComponent<CapsuleCollider2D>().enabled != false)
+        //    shield.GetComponent <CapsuleCollider2D>().enabled = false;
 
         isDefending = false;
     }
@@ -287,15 +285,16 @@ public class Player : NetworkBehaviour
 
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
-        life -= 1;
-        Debug.Log($"Current Life: {life}");
-
         if (isDead == false)
         {
+            life -= 1;
+            Debug.Log($"Current Life: {life}");
+
             if (life > 0)
                 Invoke("RespawnPlayerRpc", 2.5f);
             else if (life <= 0)
             {
+                Debug.Log("A Player has been killed!");
                 isDead = true;
                 gameManager.playerCounter--;
             }
