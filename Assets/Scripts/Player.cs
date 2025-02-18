@@ -33,7 +33,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private float dashDuration = 0.2f;                                 // Duration of a dash
 
     [SerializeField] private GameObject weapon;                                         // Player's weapon
-    
+
     public bool isDefending = false;                                                    // Player is/is not blocking
     private bool isAttacking = false;                                                   // Player is/is not attacking
 
@@ -42,24 +42,13 @@ public class Player : NetworkBehaviour
     private Sprite player_Defend;
 
     [SerializeField] private int life = 3;                                              // PLayer's lives
-   
+
     public bool isDead = false;                                                         // If player is dead
 
     [SerializeField] PlayerManager playerManager;                                       // References to player, game manager
     [SerializeField] GameManager gameManager;
 
 
-
-    //NetworkVariable<Transform> 
-
-    //WE MIGHT CHANGE FOR SPAWNING AT THE BEGGINING OF LEVELS SO WE USE THIS METHOD
-    //public override void OnNetworkSpawn()
-    //{
-    //    base.OnNetworkSpawn();
-    //    Initialize();
-    //}
-
-    
     void Awake()
     {
         if (playerManager == null)
