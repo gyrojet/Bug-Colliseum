@@ -30,6 +30,9 @@ public class UIManager_Lobby : NetworkBehaviour
             gameManager = GameManager.instance;
         }
 
+        gameManager.enabled = false;
+
+
         startGame.onClick.AddListener(StartGame);
 
         timer_InitialTime = startTimer_CountdownTime;
@@ -58,12 +61,23 @@ public class UIManager_Lobby : NetworkBehaviour
             startGame.interactable = false;
         }
     }
+     [Rpc(SendTo.ClientsAndHost)]
+
+    private void SetGameManagerToPlayersRpc()
+    {
+        gameManager.playerCounter = pm.NumberOfPlayers;
+
+        gameManager.enabled = true;
+
+
+    }
 
     private void StartGame()
     {
         if (IsHost && pm.HasGameStarted == false)
         {
-            gameManager.playerCounter = pm.NumberOfPlayers;
+            SetGameManagerToPlayersRpc();
+
 
             SetValueOfLobbyUIRpc(false);
 
@@ -130,7 +144,7 @@ public class UIManager_Lobby : NetworkBehaviour
                 pm.SetGameStatusRpc(true);
                 pm.UnfreezeAllPlayersRpc();
                 SetValueOfTimerUIRpc(false);
-                StartCoroutine(gameManager.StartCountdown());
+                gameManager.StartCountdown();
             }
         }
     }

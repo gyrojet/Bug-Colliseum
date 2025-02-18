@@ -21,6 +21,9 @@ public class GameManager : NetworkBehaviour
 
     public static GameManager instance;
 
+    public Coroutine timerCoroutine;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -43,7 +46,7 @@ public class GameManager : NetworkBehaviour
     {
         //check for players status
         //if only one alive call endGame
-        //Debug.Log("PLAYER COUNT" + playerCounter.ToString());
+        Debug.Log("PLAYER COUNT" + playerCounter.ToString());
         if (playerCounter <= 1)
         {
             EndGame();
@@ -64,7 +67,7 @@ public class GameManager : NetworkBehaviour
     void EndGame()
     {
         //Handles globalTimer / UI? / which player won ( how do I check on that?)
-        //Debug.Log(playerCounter.ToString());
+        Debug.Log(playerCounter.ToString());
 
         if (playerCounter <= 1)
         {
@@ -83,12 +86,21 @@ public class GameManager : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     private void RpcStopTimerRpc()
     {
-        StopCoroutine(StartCountdown());
+        if (timerCoroutine != null)
+        {
+            StopCoroutine(timerCoroutine);
+            timerCoroutine = null;
+        }
         Debug.Log("Timer Stopped for all players.");
     }
 
+
+
+    public void StartCountdown()
+    { timerCoroutine = StartCoroutine(Countdown()); }
+
     //ADD UI DISPLAY 
-    public IEnumerator StartCountdown()
+    public IEnumerator Countdown()
     {
         float remainingTime = countdownTime;
 
