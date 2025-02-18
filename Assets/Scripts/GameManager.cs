@@ -100,7 +100,7 @@ public class GameManager : NetworkBehaviour
     { timerCoroutine = StartCoroutine(Countdown()); }
 
     //ADD UI DISPLAY 
-    public IEnumerator Countdown()
+    private IEnumerator Countdown()
     {
         float remainingTime = countdownTime;
 
