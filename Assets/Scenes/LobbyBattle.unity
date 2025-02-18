@@ -277,7 +277,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1291917975}
   m_HandleRect: {fileID: 1291917974}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -976,7 +976,11 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 270}
   - {x: 0, y: 0, z: 90}
   - {x: 0, y: 0, z: 0}
-  playerGraphics: []
+  playerGraphics:
+  - {fileID: 21300000, guid: bdced6cc4aa778b4e806962079079846, type: 3}
+  - {fileID: 21300000, guid: ad0e6eaa0cbd943449ed4c517c0f3207, type: 3}
+  - {fileID: 21300000, guid: d1e7da055d456494091f2b96be11f725, type: 3}
+  - {fileID: 21300000, guid: 163993669fcb956419856c7715dcaf0e, type: 3}
   joinCodeField: {fileID: 740398564}
 --- !u!4 &100970812
 Transform:
@@ -4079,7 +4083,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1176560047}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999994
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4763,7 +4767,7 @@ MonoBehaviour:
     NetworkProfilingMetrics: 1
     OldPrefabList: []
   RunInBackground: 1
-  LogLevel: 0
+  LogLevel: 1
 --- !u!4 &780620850
 Transform:
   m_ObjectHideFlags: 0

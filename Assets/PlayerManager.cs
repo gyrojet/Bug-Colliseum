@@ -141,4 +141,9 @@ public class PlayerManager : NetworkBehaviour
     {
         return playerRotations[playerIndex];
     }
+
+    public Sprite GetPlayerSprite(int playerIndex) 
+    {
+        return playerGraphics[playerIndex];
+    }
 }

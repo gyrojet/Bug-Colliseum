@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 
 public class Player : NetworkBehaviour
 {
-    [SerializeField] private Vector3 playerRotation;
+    [SerializeField] private Vector3 playerRotation;                                    // Player's Orientation
     //private Sprite playerGraphics;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float originalSpeed = 5f;
@@ -70,6 +70,11 @@ public class Player : NetworkBehaviour
             playerManager = PlayerManager.pmInstance;
         }
 
+        if (gameManager == null)
+        {
+            gameManager = GameManager.instance;
+        }
+
         try
         {
             playerManager.AddPlayerToList(this.gameObject);
@@ -79,6 +84,7 @@ public class Player : NetworkBehaviour
             rb = GetComponent<Rigidbody2D>();
 
             GetAndSetRotation();
+            GetAndSetGraphics();
         }
         catch
         {
@@ -186,6 +192,11 @@ public class Player : NetworkBehaviour
         transform.Rotate(playerRotation);
     }
 
+    private void GetAndSetGraphics()
+    {
+        player_SR.sprite = playerManager.GetPlayerSprite(playerIndex);
+    }
+
     [Rpc(SendTo.ClientsAndHost)]
     private void CallAttackRpc()
     {
@@ -278,7 +289,7 @@ public class Player : NetworkBehaviour
 
         if (life > 0)
             Invoke("RespawnPlayerRpc", 2.5f);
-        else
+        else if (life <= 0)
         {
             isDead = true;
             gameManager.playerCounter--;
