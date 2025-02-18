@@ -5,85 +5,96 @@ using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
+    //  class Name    :   GameManager
+    //
+    //  Developer           :   Julia Polak
+    //                          
+    //
+    //  Synopsis            : Manages the game state, including player count, countdown timer, 
+    //                          and endgame conditions.
+    //
+    //  Date                : February 19th, 2025
+
+    // References to other manager scripts
     PlayerManager playerManager = null;
     UIManager_Lobby uiManager = null;
 
+    // Tracks the number of active players
     public int playerCounter;
+
+    // UI Elements
     [SerializeField] private TextMeshProUGUI countDown;
     [SerializeField] private GameObject timesUp;
     [SerializeField] private GameObject winner;
 
 
-    // Get the reference from UIManager / for countdown if we do it....maybe just for the playtime?
-
-    // When a player has 0 lives, call a method (a isDead bool) to change counter on GameManager / Counter has to be set up based on how many player we currently have
-
+    // Total countdown time in seconds
     public float countdownTime = 180f;
 
+    // Singleton instance
     public static GameManager instance;
 
+    // Stores reference to the countdown coroutine
     public Coroutine timerCoroutine;
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+   //  method Name    :  Start 
+    //  Synopsis   : Initializes singleton instance and references to required managers
     void Start()
     {
         if (instance == null)
-            instance = this;
+            instance = this; // Assigns singleton instance if not already set
 
         if (playerManager == null)
-            playerManager = PlayerManager.pmInstance;
+            playerManager = PlayerManager.pmInstance; // Fetches PlayerManager instance
 
         if (uiManager == null)
-            uiManager = UIManager_Lobby.instance;
+            uiManager = UIManager_Lobby.instance;  // Fetches UIManager instance
 
-        //playerCounter = playerManager.NumberOfPlayers;
-        // calls StartMatch()
-        //StartCoroutine(StartCountdown());
     }
 
-    // Update is called once per frame
+ //  Method Name        :  FixedUpdate
+    //  Synopsis          :  Constantly checks player count and stops the game if necessary
     void FixedUpdate()
     {
-        //check for players status
-        //if only one alive call endGame
-        Debug.Log("PLAYER COUNT" + playerCounter.ToString());
+        // Ends game if there is only one or no players left
         if (playerCounter <= 1)
         {
-            EndGame();
-            RpcStopTimerRpc();
+            EndGame(); // Calls function to handle game-ending logic
+            RpcStopTimerRpc(); // Stops countdown timer for all players
         }
-        //    uiManager.EndGame();
-
-        //if time`s up, call EndGame
     }
+
+    //  Method Name        :  GetPlayerCounterRpc
+    //  Synopsis          :  Retrieves the number of players on the network
 
     [Rpc(SendTo.ClientsAndHost)]
     public void GetPlayerCounterRpc()
     {
-        playerCounter = playerManager.NumberOfPlayers;
+        playerCounter = playerManager.NumberOfPlayers; // Gets the player count from PlayerManager
     }
 
-
+    //  Method Name        :  EndGame
+    //  Synopsis          :  Determines the end game condition and updates UI accordingly
     void EndGame()
     {
-        //Handles globalTimer / UI? / which player won ( how do I check on that?)
-        Debug.Log(playerCounter.ToString());
-
+       
+        // If only one player remains, declare them the winner
         if (playerCounter <= 1)
         {
             Debug.Log("You Win!!");
-            //winner.SetActive(true);
+            winner.SetActive(true); // Displays the winner UI
         }
         else
         {
             Debug.Log("Time is up!");
-            timesUp.SetActive(true);
+            timesUp.SetActive(true); // Displays the time-up UI
         }
 
 
     }
 
+   
     private void ResetGame()
     {
         playerManager.SetGameStatusRpc(false);
@@ -95,41 +106,42 @@ public class GameManager : NetworkBehaviour
         uiManager.SetValueOfLobbyUIRpc(true);
     }
 
+    //  Method Name        :  RpcStopTimerRpc
+    //  Synopsis          :  Stops the countdown timer across all clients
     [Rpc(SendTo.ClientsAndHost)]
     private void RpcStopTimerRpc()
     {
         if (timerCoroutine != null)
         {
-            StopCoroutine(timerCoroutine);
-            timerCoroutine = null;
+            StopCoroutine(timerCoroutine); // Stops the running coroutine
+            timerCoroutine = null; // Clears the reference
         }
         Debug.Log("Timer Stopped for all players.");
     }
 
-
-
+    //  Method Name        :  StartCountdown
+    //  Synopsis          :  Begins the countdown timer
     public void StartCountdown()
-    { timerCoroutine = StartCoroutine(Countdown()); }
+    {
+        timerCoroutine = StartCoroutine(Countdown()); // Starts the countdown coroutine
+    }
 
-    //ADD UI DISPLAY 
+ //  Method Name  :  Countdown
+    //  Synopsis  :  Handles countdown logic and updates UI display
     private IEnumerator Countdown()
     {
-        float remainingTime = countdownTime;
+        float remainingTime = countdownTime;  // Sets initial time
 
         while (remainingTime > 0)
         {
             Debug.Log("Time left: " + remainingTime);
-            countDown.text = remainingTime.ToString();
-            yield return new WaitForSeconds(1f);
-            remainingTime--;
+            countDown.text = remainingTime.ToString();      // Updates UI display
+            yield return new WaitForSeconds(1f);         // Waits for 1 second
+            remainingTime--;                            // Decrements timer
         }
 
-        EndGame();
+        EndGame();                          // Ends the game when countdown reaches zero
     }
-    /*
-     * Create StartMatch()
-     * re-enable player movement
-     * start countdownTimer (coroutine - start the globalTimer)
-     */
+       
 
-}
+    }

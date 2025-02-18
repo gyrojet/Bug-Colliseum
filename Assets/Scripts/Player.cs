@@ -7,7 +7,6 @@ using Unity.VisualScripting;
 public class Player : NetworkBehaviour
 {
     [SerializeField] private Vector3 playerRotation;                                    // Player's Orientation
-    //private Sprite playerGraphics;
     [SerializeField] private float speed = 5f;                                          // Player's movespeed
     [SerializeField] private float originalSpeed = 5f;                                  // Used when dashing
 
@@ -47,17 +46,6 @@ public class Player : NetworkBehaviour
 
     [SerializeField] PlayerManager playerManager;                                       // References to player, game manager
     [SerializeField] GameManager gameManager;
-
-
-
-    //NetworkVariable<Transform> 
-
-    //WE MIGHT CHANGE FOR SPAWNING AT THE BEGGINING OF LEVELS SO WE USE THIS METHOD
-    //public override void OnNetworkSpawn()
-    //{
-    //    base.OnNetworkSpawn();
-    //    Initialize();
-    //}
 
     
     void Awake()
@@ -163,11 +151,6 @@ public class Player : NetworkBehaviour
 
     void LowerShield()
     {
-        //shield.transform.localPosition = shieldOriginalPosition;
-
-        //if (shield.GetComponent<CapsuleCollider2D>().enabled != false)
-        //    shield.GetComponent <CapsuleCollider2D>().enabled = false;
-
         isDefending = false;
     }
 
@@ -248,17 +231,12 @@ public class Player : NetworkBehaviour
     }
 
     
-
+    //Lifes are randomly being subtracted twice sometimes. Bug is known by the developers, however with the short dealine to deliver the MVP it could not be further adressed.
     public void Die()
     {
         PlayerDeathEventRpc();
     }
-    //public bool IsDead()
-    //{
-    //    if (life == 0)
-    //        return isDead = true;
-
-    //}
+  
 
     [Rpc(SendTo.ClientsAndHost)]
     private void PlayerDeathEventRpc()
@@ -285,7 +263,6 @@ public class Player : NetworkBehaviour
                 gameManager.playerCounter--;
                 Debug.Log("PLAYER COUNTER" +  gameManager.playerCounter);
             }
-            //Debug.Log("Ur dead lol");
         }
     }
 
