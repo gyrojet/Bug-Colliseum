@@ -47,7 +47,6 @@ public class Player : NetworkBehaviour
     [SerializeField] PlayerManager playerManager;                                       // References to player, game manager
     [SerializeField] GameManager gameManager;
 
-    
     void Awake()
     {
         if (playerManager == null)
@@ -149,12 +148,6 @@ public class Player : NetworkBehaviour
         Debug.Log("Defense DOWN!");
     }
 
-    void LowerShield()
-    {
-        isDefending = false;
-    }
-
-    
     private void GetAndSetRotation()
     {
         playerRotation = playerManager.GetPlayerRotation(playerIndex);

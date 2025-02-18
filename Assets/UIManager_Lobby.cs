@@ -1,6 +1,8 @@
 using System.Collections;
 using TMPro;
+using Unity.Multiplayer.Center.NetcodeForGameObjectsExample.DistributedAuthority;
 using Unity.Netcode;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -147,5 +149,18 @@ public class UIManager_Lobby : NetworkBehaviour
                 gameManager.StartCountdown();
             }
         }
+    }
+
+    public IEnumerator ResetToLobby()
+    {
+        Debug.Log("Called ResetGame()");
+
+        yield return new WaitForSeconds(3f);
+
+        pm.ReturnAllPlayersToSpawnPointRpc();
+
+        pm.UnfreezeAllPlayersRpc();
+
+        SetValueOfLobbyUIRpc(true);
     }
 }
