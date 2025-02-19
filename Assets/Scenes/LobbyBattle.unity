@@ -770,6 +770,7 @@ MonoBehaviour:
   timesUp: {fileID: 1047235421}
   winner: {fileID: 1333343768}
   countdownTime: 180
+  lifes: {fileID: 1229327508}
 --- !u!4 &89157531
 Transform:
   m_ObjectHideFlags: 0

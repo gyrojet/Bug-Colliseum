@@ -42,7 +42,9 @@ public class Player : NetworkBehaviour
     private Sprite player_Defend;                                                       // Defense mode sprite
 
     [SerializeField] public int life = 3;                                               // PLayer's lives
-   
+    [SerializeField] private TextMeshPro lifes;                                             //Display lifes         
+
+
     public bool isDead = false;                                                         // If player is dead
 
     [SerializeField] PlayerManager playerManager;                                       // References to player & game manager
@@ -63,6 +65,12 @@ public class Player : NetworkBehaviour
     //  Synopsis          :  Initializes references to managers and sets up player settings
     void Awake()
     {
+        if (GameManager.Instance != null && GameManager.Instance.lifes != null)
+        {
+            GameManager.Instance.lifes.text = "Updated from Prefab!";
+        }
+
+
         if (playerManager == null)
         {
             playerManager = PlayerManager.pmInstance;                                   // Fetches PlayerManager instance
@@ -287,6 +295,7 @@ public class Player : NetworkBehaviour
         {
             life -= 1;                                                 // Decreases player's life count
             Debug.Log($"Current Life: {life}");
+             GameManager.Instance.lifes.text =  "LIVES: " + life.ToString();
 
             if (life > 0)
                 Invoke("RespawnPlayerRpc", 2.5f);                      // Triggers respawn after a delay

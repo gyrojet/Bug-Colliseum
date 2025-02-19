@@ -38,7 +38,16 @@ public class GameManager : NetworkBehaviour
     public Coroutine timerCoroutine;
 
 
-   //  method Name    :  Start 
+    public static GameManager Instance { get; private set; }
+    [SerializeField] public TextMeshProUGUI lifes;  // Assign this from the Scene
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
+
+    //  method Name    :  Start 
     //  Synopsis   : Initializes singleton instance and references to required managers
     void Start()
     {
