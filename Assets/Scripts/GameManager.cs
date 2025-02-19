@@ -83,8 +83,7 @@ public class GameManager : NetworkBehaviour
         if (playerCounter <= 1)
         {
             Debug.Log("You Win!!");
-            //winner.SetActive(true);
-            EndScreenShow();
+            winner.SetActive(true);
         }
         else
         {
@@ -93,12 +92,6 @@ public class GameManager : NetworkBehaviour
         }
 
 
-    }
-
-   
-    private void EndScreenShow()
-    {
-        
     }
 
     //  Method Name        :  RpcStopTimerRpc
