@@ -5,140 +5,131 @@ using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
-    //  class Name    :   GameManager
+
+    //  class Name        :   GameManager
     //
-    //  Developer           :   Tyler Law, Julia Polak & Walesca Borges
+    //  Developer         :   Tyler Law, Julia Polak & Walesca Borges
     //                          
     //
-    //  Synopsis            : Manages the game state, including player count, countdown timer, 
-    //                          and endgame conditions.
+    //  Synopsis          :   Manages the game state, including player count, countdown timer, 
+    //                        and endgame conditions.
     //
-    //  Date                : February 19th, 2025
-
-    // References to other manager scripts
-    [SerializeField] PlayerManager playerManager = null;
-    [SerializeField] UIManager_Lobby uiManager = null;
-
-    // Tracks the number of active players
-    public int playerCounter;
-
-    // UI Elements
-    [SerializeField] private TextMeshProUGUI countDown;
-    [SerializeField] private GameObject timesUp;
-    [SerializeField] private GameObject winner;
+    //  Date              :   February 19th, 2025
 
 
-    // Total countdown time in seconds
-    public float countdownTime = 180f;
+    [SerializeField] PlayerManager playerManager = null;                                // Reference to PlayerManager script
+    [SerializeField] UIManager_Lobby uiManager = null;                                  // Reference to UIManager_Lobby script
 
-    // Singleton instance
-    public static GameManager instance;
+    public int playerCounter;                                                           // Tracks the number of active players
 
-    // Stores reference to the countdown coroutine
-    public Coroutine timerCoroutine;
+    [SerializeField] private TextMeshProUGUI countDown;                                 // UI Element for displaying countdown
+    [SerializeField] private GameObject timesUp;                                        // UI element for "Time's Up" message
+    [SerializeField] private GameObject winner;                                         // UI element for displaying the winner
 
+    public float countdownTime = 180f;                                                  // Total countdown time in seconds
 
-    public static GameManager Instance { get; private set; }
-    [SerializeField] public TextMeshProUGUI lifes;  // Assign this from the Scene
+    public static GameManager instance;                                                 // Singleton instance
+
+    public Coroutine timerCoroutine;                                                    // Stores reference to the countdown coroutine
+
+    public static GameManager Instance { get; private set; }                            // Public static property for accessing the instance
+    [SerializeField] public TextMeshProUGUI lifes;                                      // UI element for displaying player lives
 
     void Awake()
     {
-        Instance = this;
+        Instance = this;                                                                // Assign the singleton instance
     }
 
 
     //  method Name    :  Start 
-    //  Synopsis   : Initializes singleton instance and references to required managers
+    //  Synopsis       :  Initializes singleton instance and references to required managers
     void Start()
     {
         if (instance == null)
-            instance = this; // Assigns singleton instance if not already set
+            instance = this;                                                            // Assigns singleton instance if not already set
 
         if (playerManager == null)
-            playerManager = PlayerManager.pmInstance; // Fetches PlayerManager instance
+            playerManager = PlayerManager.pmInstance;                                   // Fetches PlayerManager instance
 
         if (uiManager == null)
-            uiManager = UIManager_Lobby.instance;  // Fetches UIManager instance
+            uiManager = UIManager_Lobby.instance;                                       // Fetches UIManager instance
 
     }
 
- //  Method Name        :  FixedUpdate
-    //  Synopsis          :  Constantly checks player count and stops the game if necessary
+
+    //  Method Name     :  FixedUpdate
+    //  Synopsis        :  Constantly checks player count and stops the game if necessary
     void FixedUpdate()
     {
-        // Ends game if there is only one or no players left
-        if (playerCounter <= 1)
+        if (playerCounter <= 1)                                                         // Ends game if there is only one or no players left
         {
-            EndGame(); // Calls function to handle game-ending logic
-            RpcStopTimerRpc(); // Stops countdown timer for all players
+            EndGame();                                                                  // Calls function to handle game-ending logic
+            RpcStopTimerRpc();                                                          // Stops countdown timer for all players
         }
     }
 
-    //  Method Name        :  GetPlayerCounterRpc
+
+    //  Method Name       :  GetPlayerCounterRpc
     //  Synopsis          :  Retrieves the number of players on the network
 
     [Rpc(SendTo.ClientsAndHost)]
     public void GetPlayerCounterRpc()
     {
-        playerCounter = playerManager.NumberOfPlayers; // Gets the player count from PlayerManager
+        playerCounter = playerManager.NumberOfPlayers;                                   // Gets the player count from PlayerManager
     }
 
-    //  Method Name        :  EndGame
+
+    //  Method Name       :  EndGame
     //  Synopsis          :  Determines the end game condition and updates UI accordingly
     void EndGame()
     {
-       
-        // If only one player remains, declare them the winner
-        if (playerCounter <= 1)
+        if (playerCounter <= 1)                                                          // If only one player remains, declare them the winner
         {
-            Debug.Log("You Win!!");
-            winner.SetActive(true);
+            winner.SetActive(true);                                                      // Display the winner UI element
         }
         else
         {
-            Debug.Log("Time is up!");
-            timesUp.SetActive(true); // Displays the time-up UI
+            timesUp.SetActive(true);                                                     // Display the "Time's Up" Menu
         }
-
-
     }
 
-    //  Method Name        :  RpcStopTimerRpc
+
+    //  Method Name       :  RpcStopTimerRpc
     //  Synopsis          :  Stops the countdown timer across all clients
     [Rpc(SendTo.ClientsAndHost)]
     private void RpcStopTimerRpc()
     {
         if (timerCoroutine != null)
         {
-            StopCoroutine(timerCoroutine); // Stops the running coroutine
-            timerCoroutine = null; // Clears the reference
+            StopCoroutine(timerCoroutine);                                             // Stop the running coroutine
+            timerCoroutine = null;                                                     // Clear the reference
         }
         Debug.Log("Timer Stopped for all players.");
     }
 
-    //  Method Name        :  StartCountdown
+
+    //  Method Name       :  StartCountdown
     //  Synopsis          :  Begins the countdown timer
     public void StartCountdown()
     {
-        timerCoroutine = StartCoroutine(Countdown()); // Starts the countdown coroutine
+        timerCoroutine = StartCoroutine(Countdown());                                  // Start the countdown coroutine
     }
 
- //  Method Name  :  Countdown
-    //  Synopsis  :  Handles countdown logic and updates UI display
+
+    //  Method Name  :  Countdown
+    //  Synopsis     :  Handles countdown logic and updates UI display
     private IEnumerator Countdown()
     {
-        float remainingTime = countdownTime;  // Sets initial time
+        float remainingTime = countdownTime;                                           // Set initial countdown time
 
         while (remainingTime > 0)
         {
             Debug.Log("Time left: " + remainingTime);
-            countDown.text = remainingTime.ToString();      // Updates UI display
-            yield return new WaitForSeconds(1f);         // Waits for 1 second
-            remainingTime--;                            // Decrements timer
+            countDown.text = remainingTime.ToString();                                 // Update UI display with remaining time
+            yield return new WaitForSeconds(1f);                                       // Wait for 1 second
+            remainingTime--;                                                           // Decrement timer
         }
 
-        EndGame();                          // Ends the game when countdown reaches zero
+        EndGame();                                                                     // End the game when countdown reaches zero
     }
-       
-
 }

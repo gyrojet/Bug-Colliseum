@@ -11745,63 +11745,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1922043785}
   m_CullTransparentMesh: 1
---- !u!1 &1926344430
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1926344432}
-  - component: {fileID: 1926344431}
-  m_Layer: 0
-  m_Name: UIManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1926344431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926344430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae557b32b821ab744bb72962ca61e701, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  quitMainMenu: {fileID: 301623257}
-  resumeHowToPlay: {fileID: 1567392175}
-  cancelQuit: {fileID: 1103167462}
-  confirmQuit: {fileID: 1967064827}
-  quitEndGame: {fileID: 1129408056}
-  quitTimesUp: {fileID: 1088467491}
-  mainMenu: {fileID: 1496380706}
-  howToPlayMenu: {fileID: 2124551234}
-  quitMenu: {fileID: 1768701975}
-  gameUI: {fileID: 560746749}
-  endGameMenu: {fileID: 1333343768}
-  timesUpMenu: {fileID: 1047235421}
-  timer: 10
---- !u!4 &1926344432
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926344430}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1937773466
 GameObject:
   m_ObjectHideFlags: 0
@@ -13512,4 +13455,3 @@ SceneRoots:
   - {fileID: 1962922143}
   - {fileID: 89157531}
   - {fileID: 2095013498}
-  - {fileID: 1926344432}

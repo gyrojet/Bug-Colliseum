@@ -32,8 +32,7 @@ public class UIManager_Lobby : NetworkBehaviour
     [SerializeField] GameObject endGameMenu;                             // End Game Menu
     [SerializeField] GameObject timesUpMenu;                             // Time's Up Menu
 
-    [SerializeField] Button quitMainMenu;                                // (Main Menu) Quit button 
-    //[SerializeField] Button quitGameUI;                                  // (Game UI) Quit button 
+    [SerializeField] Button quitMainMenu;                                // (Main Menu) Quit button
     [SerializeField] Button quitEndGame;                                 // (End Game Menu) Quit button
     [SerializeField] Button quitTimesUp;                                 // (Time's Up Menu) Quit button 
 
@@ -78,7 +77,6 @@ public class UIManager_Lobby : NetworkBehaviour
         timesUpMenu.SetActive(false);
 
         quitMainMenu.onClick.AddListener(ToggleQuitMenu);                 // Calls Quit Game Menu (Main Menu)
-        //quitGameUI.onClick.AddListener(ToggleQuitMenu);                   // Calls Quit Game Menu (Game UI)
         quitEndGame.onClick.AddListener(ExitGame);                        // Calls Quit Game Menu (End Game Menu)
         quitTimesUp.onClick.AddListener(ExitGame);                        // Calls Quit Game Menu (Time's Up Menu)
 
