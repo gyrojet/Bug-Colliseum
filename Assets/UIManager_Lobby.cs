@@ -146,7 +146,7 @@ public class UIManager_Lobby : NetworkBehaviour
 
             SetValueOfLobbyUIRpc(false);                                 // Hides lobby UI
 
-            gameUI.SetActive(false);                                     // Activates the Game UI
+            gameUI.SetActive(true);                                      // Activates the Game UI
 
             playerManager.RespawnAllPlayers();                           // Move all players to spawn points
 
