@@ -3,6 +3,7 @@ using Unity.Netcode;
 using UnityEngine.InputSystem;
 using System.Collections;
 using Unity.VisualScripting;
+using TMPro;
 
 public class Player : NetworkBehaviour
 {
@@ -47,10 +48,7 @@ public class Player : NetworkBehaviour
     [SerializeField] PlayerManager playerManager;                                       // References to player & game manager
     [SerializeField] GameManager gameManager;
 
-    private GameObject life1;
-    private GameObject life2;
-    private GameObject life3;
-    private Sprite emptyLifeSprite;
+    public TMP_Text lifeText;
 
     //  Property:  SpawnPoint
     //  Synopsis:  Gets or sets the player's respawn point
@@ -87,12 +85,6 @@ public class Player : NetworkBehaviour
 
             GetAndSetRotation();                                                        // Sets player rotation
             GetAndSetGraphics();                                                        // Assigns correct graphics
-
-            life1 = GameObject.FindGameObjectWithTag("Life1");
-            life2 = GameObject.FindGameObjectWithTag("Life2");
-            life3 = GameObject.FindGameObjectWithTag("Life3");
-
-            emptyLifeSprite = Resources.Load<Sprite>("EmptyLife");
         }
         catch
         {
@@ -101,6 +93,12 @@ public class Player : NetworkBehaviour
 
         rb = GetComponent<Rigidbody2D>();                                               // Ensures Rigidbody2D is assigned
 
+    }
+
+    void Start()
+    {
+        lifeText = GameObject.FindWithTag("LifeText").GetComponent<TMP_Text>();
+        UpdateLifeDisplay();
     }
 
     //  Method Name       :  Update
@@ -298,7 +296,7 @@ public class Player : NetworkBehaviour
             life -= 1;                                                 // Decreases player's life count
             Debug.Log($"Current Life: {life}");
 
-            UpdateLifeUI();                                            // Updates Life UI
+            UpdateLifeDisplay();                                            // Updates Life UI
 
             if (life > 0)
                 Invoke("RespawnPlayerRpc", 2.5f);                      // Triggers respawn after a delay
@@ -336,17 +334,8 @@ public class Player : NetworkBehaviour
         gameObject.layer = LayerMask.NameToLayer("Player");             // Sets layer back to "Player" to allow normal interactions
     }
 
-    //  Method Name       :  UpdateLifeUI
-    //  Synopsis          :  Update the UI Life sprites based on the Player's lives.
-    private void UpdateLifeUI()
+    private void UpdateLifeDisplay()
     {
-        if (life1 != null)
-            life1.GetComponent<UnityEngine.UI.Image>().sprite = (life >= 1) ? life1.GetComponent<UnityEngine.UI.Image>().sprite : emptyLifeSprite;
-
-        if (life2 != null)
-            life2.GetComponent<UnityEngine.UI.Image>().sprite = (life >= 2) ? life2.GetComponent<UnityEngine.UI.Image>().sprite : emptyLifeSprite;
-
-        if (life3 != null)
-            life3.GetComponent<UnityEngine.UI.Image>().sprite = (life >= 3) ? life3.GetComponent<UnityEngine.UI.Image>().sprite : emptyLifeSprite;
+        lifeText.text = "Lives: " + life.ToString();
     }
 }

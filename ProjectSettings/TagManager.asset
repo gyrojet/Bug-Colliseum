@@ -9,6 +9,7 @@ TagManager:
   - Life1
   - Life2
   - Life3
+  - LifeText
   layers:
   - Default
   - TransparentFX
