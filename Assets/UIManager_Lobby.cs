@@ -33,7 +33,6 @@ public class UIManager_Lobby : NetworkBehaviour
     [SerializeField] GameObject timesUpMenu;                             // Time's Up Menu
 
     [SerializeField] Button quitMainMenu;                                // (Main Menu) Quit button 
-    //[SerializeField] Button quitGameUI;                                  // (Game UI) Quit button 
     [SerializeField] Button quitEndGame;                                 // (End Game Menu) Quit button
     [SerializeField] Button quitTimesUp;                                 // (Time's Up Menu) Quit button 
 
@@ -78,7 +77,6 @@ public class UIManager_Lobby : NetworkBehaviour
         timesUpMenu.SetActive(false);
 
         quitMainMenu.onClick.AddListener(ToggleQuitMenu);                 // Calls Quit Game Menu (Main Menu)
-        //quitGameUI.onClick.AddListener(ToggleQuitMenu);                   // Calls Quit Game Menu (Game UI)
         quitEndGame.onClick.AddListener(ExitGame);                        // Calls Quit Game Menu (End Game Menu)
         quitTimesUp.onClick.AddListener(ExitGame);                        // Calls Quit Game Menu (Time's Up Menu)
 
@@ -131,8 +129,6 @@ public class UIManager_Lobby : NetworkBehaviour
         gameManager.playerCounter = playerManager.NumberOfPlayers;       // Updates GameManager's player counter
 
         gameManager.enabled = true;                                      // Enables the GameManager
-
-
     }
 
 
@@ -210,10 +206,12 @@ public class UIManager_Lobby : NetworkBehaviour
     }
 
 
+    //  Method Name       :  ShowGameUIRpc
+    //  Synopsis          :  Activates the Game UI for Client and Host
     [Rpc(SendTo.ClientsAndHost)]
     private void ShowGameUIRpc()
     {
-        gameUI.SetActive(true);
+        gameUI.SetActive(true);                                          // Activates the Game UI Menu
     }
 
 

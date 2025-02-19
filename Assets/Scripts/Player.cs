@@ -341,10 +341,12 @@ public class Player : NetworkBehaviour
     private void UpdateLifeUI()
     {
         if (life1 != null)
-            life1.GetComponent<SpriteRenderer>().sprite = (life >= 1) ? life1.GetComponent<SpriteRenderer>().sprite : emptyLifeSprite;
+            life1.GetComponent<UnityEngine.UI.Image>().sprite = (life >= 1) ? life1.GetComponent<UnityEngine.UI.Image>().sprite : emptyLifeSprite;
+
         if (life2 != null)
-            life2.GetComponent<SpriteRenderer>().sprite = (life >= 2) ? life2.GetComponent<SpriteRenderer>().sprite : emptyLifeSprite;
+            life2.GetComponent<UnityEngine.UI.Image>().sprite = (life >= 2) ? life2.GetComponent<UnityEngine.UI.Image>().sprite : emptyLifeSprite;
+
         if (life3 != null)
-            life3.GetComponent<SpriteRenderer>().sprite = (life >= 3) ? life3.GetComponent<SpriteRenderer>().sprite : emptyLifeSprite;
+            life3.GetComponent<UnityEngine.UI.Image>().sprite = (life >= 3) ? life3.GetComponent<UnityEngine.UI.Image>().sprite : emptyLifeSprite;
     }
 }
