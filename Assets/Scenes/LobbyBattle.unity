@@ -918,7 +918,6 @@ MonoBehaviour:
   - {fileID: 1787375999385505035, guid: f4820dff019d7434e95e2c5051a397bb, type: 3}
   - {fileID: 4456169137916313165, guid: a7410e11c56ec2549a5467ccb688d5dd, type: 3}
   - {fileID: 3090099983677239213, guid: da2552f8a1c09be45bc884d90e5e4968, type: 3}
-  joinCodeField: {fileID: 740398564}
 --- !u!4 &100970812
 Transform:
   m_ObjectHideFlags: 0
