@@ -48,8 +48,6 @@ public class Player : NetworkBehaviour
     [SerializeField] PlayerManager playerManager;                                       // References to player & game manager
     [SerializeField] GameManager gameManager;
 
-    public TMP_Text lifeText;
-
     //  Property:  SpawnPoint
     //  Synopsis:  Gets or sets the player's respawn point
     public Transform SpawnPoint                                                         // Gets/sets respawn
@@ -93,12 +91,6 @@ public class Player : NetworkBehaviour
 
         rb = GetComponent<Rigidbody2D>();                                               // Ensures Rigidbody2D is assigned
 
-    }
-
-    void Start()
-    {
-        lifeText = GameObject.FindWithTag("LifeText").GetComponent<TMP_Text>();
-        UpdateLifeDisplay();
     }
 
     //  Method Name       :  Update
@@ -296,8 +288,6 @@ public class Player : NetworkBehaviour
             life -= 1;                                                 // Decreases player's life count
             Debug.Log($"Current Life: {life}");
 
-            UpdateLifeDisplay();                                            // Updates Life UI
-
             if (life > 0)
                 Invoke("RespawnPlayerRpc", 2.5f);                      // Triggers respawn after a delay
         
@@ -332,10 +322,5 @@ public class Player : NetworkBehaviour
         player_SR.color = new Color(1f, 1f, 1f, 1f);                    // Restores player's visibility
 
         gameObject.layer = LayerMask.NameToLayer("Player");             // Sets layer back to "Player" to allow normal interactions
-    }
-
-    private void UpdateLifeDisplay()
-    {
-        lifeText.text = "Lives: " + life.ToString();
     }
 }
