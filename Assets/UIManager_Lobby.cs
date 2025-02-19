@@ -1,8 +1,6 @@
 using System.Collections;
 using TMPro;
-using Unity.Multiplayer.Center.NetcodeForGameObjectsExample.DistributedAuthority;
 using Unity.Netcode;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -191,21 +189,5 @@ public class UIManager_Lobby : NetworkBehaviour
             }
         }
     }
-
-
-    ////  Method Name        :  ResetToLobby
-    ////  Synopsis          :  Resets the game state and sends players back to the lobby.
-    //public IEnumerator ResetToLobby()
-    //{
-    //    Debug.Log("Called ResetGame()");
-
-    //    yield return new WaitForSeconds(3f);                            // Waits for 3 seconds before resetting
-
-    //    playerManager.ReturnAllPlayersToSpawnPointRpc();                // Moves all players back to their spawn points
-
-    //    playerManager.UnfreezeAllPlayersRpc();                          // Unfreezes player movement
-
-    //    SetValueOfLobbyUIRpc(true);                                     // Re-enables the lobby UI
-    //}
 }
 
