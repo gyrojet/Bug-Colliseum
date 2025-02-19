@@ -70,7 +70,7 @@ public class Player : NetworkBehaviour
     {
         if (GameManager.Instance != null && GameManager.Instance.lifes != null)
         {
-            GameManager.Instance.lifes.text = "LIVES: " + lifes.ToString();             // Update UI with number of lives
+            GameManager.Instance.lifes.text = "LIVES: 3";                                // Update UI
         }
 
         if (playerManager == null)
