@@ -15,46 +15,42 @@ public class UIManager_Lobby : NetworkBehaviour
 
 
 
-    [SerializeField] PlayerManager playerManager;             // Reference to the PlayerManager script
+    [SerializeField] PlayerManager playerManager;                        // Reference to the PlayerManager script
 
-    [SerializeField] TextMeshProUGUI numPlayers;              // UI element displaying number of players
-    [SerializeField] Button startGame;                        // Start game button reference
+    [SerializeField] TextMeshProUGUI numPlayers;                         // UI element displaying number of players
+    [SerializeField] Button startGame;                                   // Start game button reference
 
-    [SerializeField] TextMeshProUGUI timerTime;               // Countdown timer UI element
+    [SerializeField] TextMeshProUGUI timerTime;                          // Countdown timer UI element
 
-    [SerializeField] GameObject serverUI;                     // UI panel for server settings
-    [SerializeField] GameObject timerUI;                      // UI panel for countdown timer
+    [SerializeField] GameObject serverUI;                                // UI panel for server settings
+    [SerializeField] GameObject timerUI;                                 // UI panel for countdown timer
 
+    [SerializeField] GameObject mainMenu;                                // Main Menu
+    [SerializeField] GameObject howToPlayMenu;                           // How To Play Menu
+    [SerializeField] GameObject quitMenu;                                // Quit Menu
+    [SerializeField] GameObject gameUI;                                  // Game UI
+    [SerializeField] GameObject endGameMenu;                             // End Game Menu
+    [SerializeField] GameObject timesUpMenu;                             // Time's Up Menu
 
+    [SerializeField] Button quitMainMenu;                                // (Main Menu) Quit button 
+    [SerializeField] Button quitGameUI;                                  // (Game UI) Quit button 
+    [SerializeField] Button quitEndGame;                                 // (End Game Menu) Quit button
+    [SerializeField] Button quitTimesUp;                                 // (Time's Up Menu) Quit button 
 
-    [SerializeField] GameObject mainMenu;                     // Main Menu
-    [SerializeField] GameObject howToPlayMenu;                // How To Play Menu
-    [SerializeField] GameObject quitMenu;                     // Quit Menu
-    [SerializeField] GameObject gameUI;                       // Game UI
-    [SerializeField] GameObject endGameMenu;                  // End Game Menu
-    [SerializeField] GameObject timesUpMenu;                  // Time's Up Menu
+    [SerializeField] Button cancelQuit;                                  // (Quit Menu) Cancel button 
+    [SerializeField] Button confirmQuit;                                 // (Quit Menu) Confirm button
 
-    [SerializeField] Button quitMainMenu;                     // (Main Menu) Quit button 
-    [SerializeField] Button quitGameUI;                       // (Game UI) Quit button 
-    [SerializeField] Button quitEndGame;                      // (End Game Menu) Quit button
-    [SerializeField] Button quitTimesUp;                      // (Time's Up Menu) Quit button 
+    [SerializeField] Button howToPlay;                                   // How to Play button
+    [SerializeField] Button resumeHowToPlay;                             // (How To Play Menu) Resume button
 
-    [SerializeField] Button cancelQuit;                       // (Quit Menu) Cancel button 
-    [SerializeField] Button confirmQuit;                      // (Quit Menu) Confirm button
+    [SerializeField] float timer = 6f;                                   // Timer for the menu activation
 
-    [SerializeField] Button howToPlay;                        // How to Play button
-    [SerializeField] Button resumeHowToPlay;                  // (How To Play Menu) Resume button
+    [SerializeField] int startTimer_CountdownTime = 3;                   // Initial countdown time before game starts
+    private int timer_InitialTime;                                       // Stores the initial countdown value for resetting
 
-    [SerializeField] float timer = 6f;                        // Timer for the menu activation
+    GameManager gameManager = null;                                      // Reference to the GameManager script
 
-
-
-    [SerializeField] int startTimer_CountdownTime = 3;        // Initial countdown time before game starts
-    private int timer_InitialTime;                            // Stores the initial countdown value for resetting
-
-    GameManager gameManager = null;                           // Reference to the GameManager script
-
-    public static UIManager_Lobby instance;                   // Singleton instance for UIManager_Lobby
+    public static UIManager_Lobby instance;                              // Singleton instance for UIManager_Lobby
 
 
 
@@ -64,22 +60,18 @@ public class UIManager_Lobby : NetworkBehaviour
     {
         if (gameManager == null) 
         {
-            gameManager = GameManager.instance;               // Assigns GameManager reference
+            gameManager = GameManager.instance;                          // Assigns GameManager reference
         }
 
-        gameManager.enabled = false;                          // Ensures the game manager is disabled at the beginning
+        gameManager.enabled = false;                                     // Ensures the game manager is disabled at the beginning
 
+        StartCoroutine(TimerMainMenu());                                 // Activates the Main Menu for few seconds
 
-        // Activates the Main Menu for few seconds
-        StartCoroutine(TimerMainMenu());
+        startGame.onClick.AddListener(StartGame);                        // Adds StartGame() function to the start button click event
 
+        timer_InitialTime = startTimer_CountdownTime;                    // Stores the initial countdown timer value
 
-        startGame.onClick.AddListener(StartGame);             // Adds StartGame() function to the start button click event
-
-        timer_InitialTime = startTimer_CountdownTime;         // Stores the initial countdown timer value
-
-        // Hide all menus
-        howToPlayMenu.SetActive(false);
+        howToPlayMenu.SetActive(false);                                  // Hide all menus
         quitMenu.SetActive(false);
         gameUI.SetActive(false);
         endGameMenu.SetActive(false);
@@ -87,23 +79,23 @@ public class UIManager_Lobby : NetworkBehaviour
 
         quitMainMenu.onClick.AddListener(ToggleQuitMenu);                 // Calls Quit Game Menu (Main Menu)
         quitGameUI.onClick.AddListener(ToggleQuitMenu);                   // Calls Quit Game Menu (Game UI)
-        quitEndGame.onClick.AddListener(ToggleQuitMenu);                  // Calls Quit Game Menu (End Game Menu)
-        quitTimesUp.onClick.AddListener(ToggleQuitMenu);                  // Calls Quit Game Menu (Time's Up Menu)
+        quitEndGame.onClick.AddListener(ExitGame);                        // Calls Quit Game Menu (End Game Menu)
+        quitTimesUp.onClick.AddListener(ExitGame);                        // Calls Quit Game Menu (Time's Up Menu)
 
         howToPlay.onClick.AddListener(ToggleHowToPlay);                   // Calls How To Play Menu (Main Menu)
         resumeHowToPlay.onClick.AddListener(ToggleHowToPlay);             // Exit How To Play Menu
 
-        // Quit Menu
-        cancelQuit.onClick.AddListener(ToggleQuitMenu);
-        confirmQuit.onClick.AddListener(ExitGame);
+        cancelQuit.onClick.AddListener(ToggleQuitMenu);                   // Cancel quit (Quit Menu)
+        confirmQuit.onClick.AddListener(ExitGame);                        // Confirm quit (Quit Menu)
     }
+
 
     //  Method Name       :  Update
     //  Synopsis          :  Updates the player count display and start button interactability.
     private void Update()
     {
-        UpdatePlayerCount();                                  // Updates the number of players
-        SetStartGameButton();                                 // Enables or disables the start button based on player count
+        UpdatePlayerCount();                                              // Updates the number of players
+        SetStartGameButton();                                             // Enables or disables the start button based on player count
     }
 
 
@@ -111,8 +103,8 @@ public class UIManager_Lobby : NetworkBehaviour
     //  Synopsis          :  Updates the UI to reflect the current number of players.
     private void UpdatePlayerCount()
     {
-        int count = playerManager.NumberOfPlayers;            // Retrieves the number of players from PlayerManager
-        numPlayers.text = count.ToString();                   // Updates the UI text
+        int count = playerManager.NumberOfPlayers;                       // Retrieves the number of players from PlayerManager
+        numPlayers.text = count.ToString();                              // Updates the UI text
     }
 
 
@@ -122,14 +114,13 @@ public class UIManager_Lobby : NetworkBehaviour
     {
         if (playerManager.NumberOfPlayers > 1) 
         {
-            startGame.interactable = true;                    // Enables button when enough players are present
+            startGame.interactable = true;                               // Enables button when enough players are present
         }
         else
         {
-            startGame.interactable = false;                   // Disables button if there aren't enough players
+            startGame.interactable = false;                              // Disables button if there aren't enough players
         }
     }
-
 
 
     //  Method Name       :  SetGameManagerToPlayersRpc
@@ -137,9 +128,9 @@ public class UIManager_Lobby : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     private void SetGameManagerToPlayersRpc()
     {
-        gameManager.playerCounter = playerManager.NumberOfPlayers;      // Updates GameManager's player counter
+        gameManager.playerCounter = playerManager.NumberOfPlayers;       // Updates GameManager's player counter
 
-        gameManager.enabled = true;                                     // Enables the GameManager
+        gameManager.enabled = true;                                      // Enables the GameManager
 
 
     }
@@ -149,19 +140,19 @@ public class UIManager_Lobby : NetworkBehaviour
     //  Synopsis          :  Handles the logic to start the game, including setting up UI and game states.
     private void StartGame()
     {
-        if (IsHost && playerManager.HasGameStarted == false)            // Ensures only the host can start the game and only if it hasn't started yet
+        if (IsHost && playerManager.HasGameStarted == false)             // Ensures only the host can start the game and only if it hasn't started yet
         {
-            SetGameManagerToPlayersRpc();                               // Synchronizes game manager settings
+            SetGameManagerToPlayersRpc();                                // Synchronizes game manager settings
 
-            SetValueOfLobbyUIRpc(false);                                // Hides lobby UI
+            SetValueOfLobbyUIRpc(false);                                 // Hides lobby UI
 
-            gameUI.SetActive(false);                                    // Activates the Game UI
+            gameUI.SetActive(false);                                     // Activates the Game UI
 
-            playerManager.RespawnAllPlayers();                          // Move all players to spawn points
+            playerManager.RespawnAllPlayers();                           // Move all players to spawn points
 
-            playerManager.FreezeAllPlayersRpc();                        // Freezes players to prevent movement before the game starts
+            playerManager.FreezeAllPlayersRpc();                         // Freezes players to prevent movement before the game starts
                                                                       
-            MessagePlayersToBeginCountdownRpc();                        // Starts the countdown timer for all players
+            MessagePlayersToBeginCountdownRpc();                         // Starts the countdown timer for all players
         }
         else
         {
@@ -169,18 +160,20 @@ public class UIManager_Lobby : NetworkBehaviour
         }
     }
 
+
     //  Method Name       :  EndGame
     //  Synopsis          :  Ends the game and resets the lobby UI.
     public void EndGame()
     {
         Debug.Log("GAME OVER!!!!!!");
 
-        playerManager.SetGameStatusRpc(false);          // Updates game state to inactive
-        SetValueOfLobbyUIRpc(true);                     // Re-enables the lobby UI
+        playerManager.SetGameStatusRpc(false);                           // Updates game state to inactive
+        SetValueOfLobbyUIRpc(true);                                      // Re-enables the lobby UI
 
-        playerManager.RespawnAllPlayers();              // Respawns all players
-        playerManager.UnfreezeAllPlayersRpc();          // Unfreezes player movement
+        playerManager.RespawnAllPlayers();                               // Respawns all players
+        playerManager.UnfreezeAllPlayersRpc();                           // Unfreezes player movement
     }
+
 
     //  Method Name       :  GameOverReset
     //  Synopsis          :  Resets the game status without restarting the entire lobby.
@@ -198,6 +191,7 @@ public class UIManager_Lobby : NetworkBehaviour
         serverUI.SetActive(value);
     }
 
+
     //  Method Name       :  SetValueOfTimerUIRpc
     //  Synopsis          :  Toggles the visibility of the timer UI for all players.
     [Rpc(SendTo.ClientsAndHost)]
@@ -206,13 +200,15 @@ public class UIManager_Lobby : NetworkBehaviour
         timerUI.SetActive(value);
     }
 
+
     //  Method Name       :  MessagePlayersToBeginCountdownRpc
     //  Synopsis          :  Triggers the countdown timer on all clients.
     [Rpc(SendTo.ClientsAndHost)]
     private void MessagePlayersToBeginCountdownRpc()
     {
-        StartCoroutine(TimerCountdown());    // Start round countdown
+        StartCoroutine(TimerCountdown());                                 // Start round countdown
     }
+
 
     //  Method Name       :  TimerCountdown
     //  Synopsis          :  Handles the countdown timer before the game starts.
@@ -222,74 +218,70 @@ public class UIManager_Lobby : NetworkBehaviour
 
         while (startTimer_CountdownTime > 0) 
         {
-            timerTime.text = startTimer_CountdownTime.ToString();       // Updates the countdown UI
-            startTimer_CountdownTime--;                                 // Decreases the countdown timer
+            timerTime.text = startTimer_CountdownTime.ToString();         // Updates the countdown UI
+            startTimer_CountdownTime--;                                   // Decreases the countdown timer
 
-            yield return new WaitForSeconds(1f);                        // Waits for 1 second
+            yield return new WaitForSeconds(1f);                          // Waits for 1 second
 
             if (startTimer_CountdownTime <= 0)
             {
-                playerManager.SetGameStatusRpc(true);                   // Starts the game
-                playerManager.UnfreezeAllPlayersRpc();                  // Unfreezes player movement
-                SetValueOfTimerUIRpc(false);                            // Hides the countdown timer UI
-                gameManager.StartCountdown();                           // Starts the in-game timer
+                playerManager.SetGameStatusRpc(true);                     // Starts the game
+                playerManager.UnfreezeAllPlayersRpc();                    // Unfreezes player movement
+                SetValueOfTimerUIRpc(false);                              // Hides the countdown timer UI
+                gameManager.StartCountdown();                             // Starts the in-game timer
             }
         }
     }
 
 
-    // Turn on and off the Quit Menu
+    //  Method Name       :  ToggleQuitMenu
+    //  Synopsis          :  Turns on and off the Quit Menu.
     public void ToggleQuitMenu()
     {
-        if (quitMenu.activeSelf == false)
+        if (quitMenu.activeSelf == false)                                   // Check if the Quit Menu is not active
         {
-            quitMainMenu.interactable = false;
-            howToPlay.interactable = false;
-            quitMenu.SetActive(true);
+            quitMainMenu.interactable = false;                              // Make the Main Menu non-interactable
+            quitMenu.SetActive(true);                                       // Activate the Quit Menu
         }
         else if (quitMenu.activeSelf == true)
         {
-            quitMainMenu.interactable = true;
-            howToPlay.interactable = true;
-            quitMenu.SetActive(false);
+            quitMainMenu.interactable = true;                               // Make the Main Menu interactable
+            quitMenu.SetActive(false);                                      // Deactivate the Quit Menu
         }
     }
 
-    // Turn on and off the How To Play Menu
+
+    //  Method Name       :  ToggleHowToPlay
+    //  Synopsis          :  Turns on and off the How To Play Menu.
     public void ToggleHowToPlay()
     {
-        if (howToPlayMenu.activeSelf == false)
+        if (howToPlayMenu.activeSelf == false)                              // Check if the How To Play Menu is not active
         {
-            howToPlay.interactable = false;
-            howToPlayMenu.SetActive(true);
+            howToPlay.interactable = false;                                 // Make the How To Play button non-interactable
+            howToPlayMenu.SetActive(true);                                  // Activate the How To Play Menu
         }
         else if (howToPlayMenu.activeSelf == true)
         {
-            howToPlay.interactable = true;
-            howToPlayMenu.SetActive(false);
+            howToPlay.interactable = true;                                  // Make the How To Play button interactable
+            howToPlayMenu.SetActive(false);                                 // Deactivate the How To Play Menu
         }
     }
 
-    // Exit the application
+
+    //  Method Name       :  ExitGame
+    //  Synopsis          :  Exits the application.
     public void ExitGame()
     {
         Application.Quit();
     }
 
-    // Timer for the Main Menu
+
+    //  Method Name       :  TimerMainMenu
+    //  Synopsis          :  Starts a coroutine to set a timer for the Main Menu activation.
     IEnumerator TimerMainMenu()
     {
-        mainMenu.SetActive(true);                               // Activates the Main Menu
-        yield return new WaitForSeconds(timer);                 // Sets the timer
-        mainMenu.SetActive(false);                              // Deactivates
+        mainMenu.SetActive(true);                                 // Activates the Main Menu
+        yield return new WaitForSeconds(timer);                   // Sets the timer
+        mainMenu.SetActive(false);                                // Deactivates
     }
-
-    //// Timer for How to Play
-    //IEnumerator TimerHowToPlay()
-    //{
-    //    howToPlayMenu.SetActive(true);                          // Activates the How To Play Menu
-    //    yield return new WaitForSeconds(timer);                 // Sets the timer
-    //    howToPlayMenu.SetActive(false);                         // Deactivates
-    //}
 }
-
