@@ -47,10 +47,10 @@ public class Player : NetworkBehaviour
     [SerializeField] PlayerManager playerManager;                                       // References to player & game manager
     [SerializeField] GameManager gameManager;
 
-    [SerializeField] private GameObject life1;
-    [SerializeField] private GameObject life2;
-    [SerializeField] private GameObject life3;
-    [SerializeField] private Sprite emptyLifeSprite;
+    private GameObject life1;
+    private GameObject life2;
+    private GameObject life3;
+    private Sprite emptyLifeSprite;
 
     //  Property:  SpawnPoint
     //  Synopsis:  Gets or sets the player's respawn point
@@ -88,6 +88,11 @@ public class Player : NetworkBehaviour
             GetAndSetRotation();                                                        // Sets player rotation
             GetAndSetGraphics();                                                        // Assigns correct graphics
 
+            life1 = GameObject.FindGameObjectWithTag("Life1");
+            life2 = GameObject.FindGameObjectWithTag("Life2");
+            life3 = GameObject.FindGameObjectWithTag("Life3");
+
+            emptyLifeSprite = Resources.Load<Sprite>("EmptyLife");
         }
         catch
         {
@@ -335,8 +340,11 @@ public class Player : NetworkBehaviour
     //  Synopsis          :  Update the UI Life sprites based on the Player's lives.
     private void UpdateLifeUI()
     {
-        life1.GetComponent<SpriteRenderer>().sprite = (life >= 1) ? life1.GetComponent<SpriteRenderer>().sprite : emptyLifeSprite;   // Updates each life sprite individually
-        life2.GetComponent<SpriteRenderer>().sprite = (life >= 2) ? life2.GetComponent<SpriteRenderer>().sprite : emptyLifeSprite;
-        life3.GetComponent<SpriteRenderer>().sprite = (life >= 3) ? life3.GetComponent<SpriteRenderer>().sprite : emptyLifeSprite;
+        if (life1 != null)
+            life1.GetComponent<SpriteRenderer>().sprite = (life >= 1) ? life1.GetComponent<SpriteRenderer>().sprite : emptyLifeSprite;
+        if (life2 != null)
+            life2.GetComponent<SpriteRenderer>().sprite = (life >= 2) ? life2.GetComponent<SpriteRenderer>().sprite : emptyLifeSprite;
+        if (life3 != null)
+            life3.GetComponent<SpriteRenderer>().sprite = (life >= 3) ? life3.GetComponent<SpriteRenderer>().sprite : emptyLifeSprite;
     }
 }

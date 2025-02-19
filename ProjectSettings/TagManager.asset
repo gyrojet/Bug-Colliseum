@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Weapon
   - Shield
+  - Life1
+  - Life2
+  - Life3
   layers:
   - Default
   - TransparentFX
