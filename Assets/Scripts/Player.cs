@@ -8,7 +8,7 @@ public class Player : NetworkBehaviour
 {
     //  class Name    :   Player
     //
-    //  Developer           :   Julia Polak
+    //  Developer           :   Tyler Law, Julia Polak & Walesca Borges
     //                          
     //  Synopsis           :   Manages player movement, attacks, dashes, defense, respawning, and networking.
     //  

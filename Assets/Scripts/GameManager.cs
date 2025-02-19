@@ -7,7 +7,7 @@ public class GameManager : NetworkBehaviour
 {
     //  class Name    :   GameManager
     //
-    //  Developer           :   Julia Polak
+    //  Developer           :   Tyler Law, Julia Polak & Walesca Borges
     //                          
     //
     //  Synopsis            : Manages the game state, including player count, countdown timer, 
@@ -16,8 +16,8 @@ public class GameManager : NetworkBehaviour
     //  Date                : February 19th, 2025
 
     // References to other manager scripts
-    PlayerManager playerManager = null;
-    UIManager_Lobby uiManager = null;
+    [SerializeField] PlayerManager playerManager = null;
+    [SerializeField] UIManager_Lobby uiManager = null;
 
     // Tracks the number of active players
     public int playerCounter;
@@ -84,8 +84,7 @@ public class GameManager : NetworkBehaviour
         {
             Debug.Log("You Win!!");
             //winner.SetActive(true);
-
-            ResetGame();
+            EndScreenShow();
         }
         else
         {
@@ -97,7 +96,7 @@ public class GameManager : NetworkBehaviour
     }
 
    
-    private void ResetGame()
+    private void EndScreenShow()
     {
         
     }
@@ -140,4 +139,4 @@ public class GameManager : NetworkBehaviour
     }
        
 
-    }
+}

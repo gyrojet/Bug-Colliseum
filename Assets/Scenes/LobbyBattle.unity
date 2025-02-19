@@ -762,6 +762,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  playerManager: {fileID: 100970811}
+  uiManager: {fileID: 1962922142}
   playerCounter: 0
   countDown: {fileID: 671741203}
   timesUp: {fileID: 0}
@@ -11754,7 +11756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  pm: {fileID: 100970811}
+  playerManager: {fileID: 100970811}
   numPlayers: {fileID: 154190638}
   startGame: {fileID: 389006806}
   timerTime: {fileID: 1254432185}
