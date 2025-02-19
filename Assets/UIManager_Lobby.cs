@@ -146,7 +146,7 @@ public class UIManager_Lobby : NetworkBehaviour
 
             SetValueOfLobbyUIRpc(false);                                 // Hides lobby UI
 
-            gameUI.SetActive(true);                                      // Activates the Game UI
+            ShowGameUIRpc();                                             // Activates the Game UI
 
             playerManager.RespawnAllPlayers();                           // Move all players to spawn points
 
@@ -207,6 +207,13 @@ public class UIManager_Lobby : NetworkBehaviour
     private void MessagePlayersToBeginCountdownRpc()
     {
         StartCoroutine(TimerCountdown());                                 // Start round countdown
+    }
+
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void ShowGameUIRpc()
+    {
+        gameUI.SetActive(true);
     }
 
 
